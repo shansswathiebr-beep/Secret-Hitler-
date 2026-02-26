@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <title>Secret Hitler • Turbo KI</title>
+    
+    <style>
+        :root {
+            --gold: #d4a574;
+            --bg-card: #121212;
+            --bg-elevated: #1a1a1a;
+            --danger: #ff2d55;
+            --liberal: #2980b9;
+            --fascist: #c0392b;
+            --bot: #9b59b6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 5px;
+            width: 100%;
+            text-align: center;
+            font-size: 9px;
+            color: rgba(212, 165, 116, 0.15);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 10vw;
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            background: linear-gradient(to right, var(--gold), #e8b4b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            line-height: 0.9;
+            margin-bottom: 5vh;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .setup-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .counter-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .counter-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 165, 116, 0.3);
+            background: transparent;
+            color: var(--gold);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .counter-value {
+            font-size: 48px;
+            font-weight: 200;
+            color: #fff;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .mode-info {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .speed-indicator {
+            color: #27ae60;
+            font-size: 11px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .player-list {
+            flex: 1;
+            overflow-y: auto;
+            margin: 20px 0;
+            padding-bottom: 100px;
+        }
+
+        .player-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .player-input input {
+            flex: 1;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .player-input.bot input {
+            border-color: rgba(155, 89, 182, 0.3);
+            background: rgba(155, 89, 182, 0.1);
+            color: #bb8fce;
+        }
+
+        .footer-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            background: linear-gradient(to top, #000 90%, transparent);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .btn {
+            flex: 1;
+            height: 60px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+            border: none;
+            box-shadow: 0 4px 20px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            height: auto;
+            font-size: 12px;
+            flex: 0;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .tracks-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .track {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .track::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .track.liberal::before { background: var(--liberal); }
+        .track.fascist::before { background: var(--fascist); }
+
+        .track-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .track-score {
+            font-size: 42px;
+            font-weight: 200;
+            line-height: 1;
+            margin: 10px 0;
+        }
+
+        .track.liberal .track-score { color: var(--liberal); }
+        .track.fascist .track-score { color: var(--fascist); }
+
+        .status-bar {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .status-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .status-value.danger { color: var(--danger); }
+
+        .phase-indicator {
+            background: rgba(212, 165, 116, 0.1);
+            border: 1px solid rgba(212, 165, 116, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .phase-indicator.bot-turn {
+            background: rgba(155, 89, 182, 0.15);
+            border-color: rgba(155, 89, 182, 0.5);
+        }
+
+        .phase-title {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .phase-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: #fff;
+        }
+
+        .players-section {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 18px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .player-row.president {
+            border-left: 4px solid var(--gold);
+            background: linear-gradient(90deg, rgba(212, 165, 116, 0.1), var(--bg-card));
+        }
+
+        .player-row.chancellor {
+            border-left: 4px solid var(--danger);
+            background: linear-gradient(90deg, rgba(255, 45, 85, 0.1), var(--bg-card));
+        }
+
+        .player-row.bot {
+            border-right: 4px solid var(--bot);
+        }
+
+        .player-name {
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bot-icon {
+            font-size: 14px;
+            color: #bb8fce;
+        }
+
+        .player-meta {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .overlay.visible { display: flex; }
+
+        .overlay-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .overlay-title {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .policy-card {
+            width: 100px;
+            height: 150px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .policy-card.liberal {
+            background: var(--liberal);
+        }
+
+        .policy-card.fascist {
+            background: var(--fascist);
+        }
+
+        .role-card {
+            background: var(--bg-card);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .role-card.liberal { border-color: var(--liberal); }
+        .role-card.fascist { border-color: var(--fascist); }
+        .role-card.hitler { border-color: var(--gold); }
+
+        .role-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .role-title {
+            font-size: 28px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .vote-btn {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: none;
+            font-size: 40px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .vote-btn.yes { background: #27ae60; }
+        .vote-btn.no { background: var(--danger); }
+
+        .log-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            max-height: 60vh;
+            overflow: hidden;
+        }
+
+        .log-content {
+            overflow-y: auto;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .log-entry {
+            margin-bottom: 6px;
+            padding-left: 10px;
+            border-left: 2px solid #333;
+            color: #666;
+        }
+
+        .log-entry.new { border-left-color: var(--gold); color: #fff; }
+        .log-entry.important { border-left-color: var(--danger); color: var(--danger); }
+        .log-entry.bot { border-left-color: var(--bot); color: #bb8fce; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="watermark">© 2026 Hans-Swathi Srikandaraja • 27804 Berne</div>
+
+    <!-- START SCREEN -->
+    <div id="screen-start" class="screen active">
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <h1>Secret<br>Hitler</h1>
+            <p style="color:#666; letter-spacing:3px; font-size:12px; margin-top:-20px; margin-bottom:40px;">TURBO KI EDITION</p>
+        </div>
+        <div style="width:100%; max-width:400px;">
+            <button class="btn btn-gold" onclick="showScreen('setup')" style="margin-bottom:12px;">Neues Spiel</button>
+            <button class="btn" onclick="resumeGame()" id="resumeBtn" style="display:none;">Fortsetzen</button>
+            <button class="btn" style="margin-top:12px; opacity:0.6;" onclick="showRules()">Regeln</button>
+        </div>
+    </div>
+
+    <!-- SETUP SCREEN -->
+    <div id="screen-setup" class="screen">
+        <h2>Setup</h2>
+        <div class="setup-container">
+            <h3>Menschliche Spieler</h3>
+            <div class="counter-row">
+                <button class="counter-btn" onclick="adjustCount(-1)">−</button>
+                <div class="counter-value" id="playerCount">3</div>
+                <button class="counter-btn" onclick="adjustCount(1)">+</button>
+            </div>
+            <div class="mode-info" id="modeInfo">3 + 2 KI-Bots = 5 Spieler</div>
+            <div class="speed-indicator">⚡ TURBO: Sofort-Aktion</div>
+        </div>
+        <h3>Namen</h3>
+        <div class="player-list" id="setupPlayerList"></div>
+        <div class="footer-actions">
+            <button class="btn" onclick="showScreen('start')">Zurück</button>
+            <button class="btn btn-gold" onclick="initGame()">Start</button>
+        </div>
+    </div>
+
+    <!-- REVEAL SCREEN -->
+    <div id="screen-reveal" class="screen">
+        <div class="overlay-header" style="margin-bottom:40px;">
+            <div class="overlay-title">Geheimakte</div>
+        </div>
+        <div id="revealPass" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <div style="background:var(--bg-card); padding:40px; border-radius:25px; text-align:center; margin-bottom:30px;">
+                <div style="font-size:12px; color:#666; margin-bottom:15px;">Spieler</div>
+                <div id="revealName" style="font-size:32px; color:var(--gold);">Name</div>
+                <div id="revealBotBadge" style="margin-top:10px; color:#bb8fce; display:none;">🤖 KI</div>
+            </div>
+            <button class="btn btn-gold" onclick="showRole()" style="max-width:300px;">Rolle Anzeigen</button>
+        </div>
+        <div id="revealCard" style="display:none; width:100%; flex-direction:column; align-items:center;">
+            <div id="roleCard" class="role-card">
+                <div class="role-icon" id="roleIcon">🕊️</div>
+                <div class="role-title" id="roleTitle">Liberal</div>
+                <div style="color:#888; font-size:14px; margin-top:10px;" id="roleDesc">...</div>
+            </div>
+            <button class="btn btn-gold" onclick="nextReveal()" style="margin-top:30px; max-width:300px;">Verstanden</button>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="screen-game" class="screen">
+        <div class="game-header">
+            <button class="btn btn-small" onclick="resetGame()">✕</button>
+            <div style="text-align:center; flex:1;">
+                <div style="font-size:11px; color:#666;">RUNDE</div>
+                <div id="roundDisplay" style="font-size:20px; color:var(--gold);">1</div>
+            </div>
+            <button class="btn btn-small" onclick="toggleLog()">📋</button>
+        </div>
+
+        <div class="tracks-container">
+            <div class="track liberal">
+                <div class="track-label">Liberal</div>
+                <div class="track-score" id="scoreLib">0</div>
+                <div style="font-size:10px; color:#444;">ZIEL: 5</div>
+            </div>
+            <div class="track fascist">
+                <div class="track-label">Faschist</div>
+                <div class="track-score" id="scoreFas">0</div>
+                <div style="font-size:10px; color:#444;">ZIEL: 6</div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">Wahl-Tracker</div>
+                <div class="status-value danger" id="failDisplay">0/3</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Karten</div>
+                <div class="status-value" id="deckDisplay">17</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Abgelegt</div>
+                <div class="status-value" id="discardDisplay">0</div>
+            </div>
+        </div>
+
+        <div class="phase-indicator" id="phaseIndicator">
+            <div class="phase-title" id="phaseTitle">Phase</div>
+            <div class="phase-subtitle" id="phaseText">Warte...</div>
+        </div>
+
+        <div class="players-section" id="playerListContainer"></div>
+
+        <div class="footer-actions" id="gameFooter" style="display:none;">
+            <button class="btn btn-gold" id="mainActionBtn">AKTION</button>
+        </div>
+    </div>
+
+    <!-- OVERLAYS -->
+    <div id="overlay-action" class="overlay">
+        <div class="overlay-header">
+            <div class="overlay-title" id="actionTitle">Titel</div>
+            <div style="color:#666; font-size:14px;" id="actionDesc">Beschreibung</div>
+        </div>
+        <div id="actionContent" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px;"></div>
+    </div>
+
+    <div id="overlay-vote" class="overlay">
+        <div class="overlay-header">
+            <div class="overlay-title">Abstimmung</div>
+        </div>
+        <div style="background:var(--bg-card); padding:30px; border-radius:20px; margin-bottom:30px; text-align:center;">
+            <div style="font-size:24px; color:#fff;">
+                <span style="color:var(--gold);" id="votePresident">...</span> + 
+                <span style="color:var(--danger);" id="voteChancellor">...</span>
+            </div>
+        </div>
+        <div style="display:flex; justify-content:center; gap:30px;">
+            <button class="vote-btn yes" onclick="submitVote(true)">👍</button>
+            <button class="vote-btn no" onclick="submitVote(false)">👎</button>
+        </div>
+    </div>
+
+    <div id="overlay-log" class="overlay" onclick="toggleLog()">
+        <div class="log-container" onclick="event.stopPropagation()">
+            <div class="log-header" style="padding:20px; border-bottom:1px solid #333; display:flex; justify-content:space-between;">
+                <span style="color:var(--gold);">LOG</span>
+                <button class="btn btn-small" onclick="toggleLog()">Schließen</button>
+            </div>
+            <div class="log-content" id="logContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'sh_final_v2';
+        let state = {
+            screen: 'start',
+            players: [],
+            humanPlayers: [],
+            roles: {},
+            deck: [],
+            discard: [],
+            liberalScore: 0,
+            fascistScore: 0,
+            electionTracker: 0,
+            round: 1,
+            president: null,
+            chancellor: null,
+            lastChancellor: null,
+            phase: 'nomination',
+            hand: [],
+            dead: [],
+            investigated: [],
+            revealIndex: 0,
+            logs: []
+        };
+
+        window.onload = () => {
+            loadState();
+            setupInputs();
+            if (state.screen !== 'start') {
+                document.getElementById('resumeBtn').style.display = 'block';
+            }
+        };
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                state = JSON.parse(saved);
+                if (!state.logs) state.logs = [];
+            }
+        }
+
+        function isBot(name) { return name.startsWith('Bot '); }
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function showScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + name).classList.add('active');
+            state.screen = name;
+            saveState();
+        }
+
+        let humanCount = 3;
+        function adjustCount(d) {
+            humanCount += d;
+            if (humanCount < 3) humanCount = 3;
+            if (humanCount > 5) humanCount = 5;
+            document.getElementById('playerCount').textContent = humanCount;
+            const bots = 5 - humanCount;
+            document.getElementById('modeInfo').textContent = `${humanCount} Menschen + ${bots} Bots = 5`;
+            setupInputs();
+        }
+
+        function setupInputs() {
+            const container = document.getElementById('setupPlayerList');
+            container.innerHTML = '';
+            for (let i = 0; i < humanCount; i++) {
+                const div = document.createElement('div');
+                div.className = 'player-input';
+                div.innerHTML = `<input type="text" placeholder="Spieler ${i+1}" id="p-${i}" value="${state.humanPlayers[i] || ''}">`;
+                container.appendChild(div);
+            }
+            for (let i = 0; i < 5 - humanCount; i++) {
+                const div = document.createElement('div');
+                div.className = 'player-input bot';
+                div.innerHTML = `<span style="font-size:20px;">🤖</span><input type="text" value="Bot ${i+1}" readonly>`;
+                container.appendChild(div);
+            }
+        }
+
+        function initGame() {
+            try {
+                const humans = [];
+                for (let i = 0; i < humanCount; i++) {
+                    const val = document.getElementById(`p-${i}`).value.trim();
+                    humans.push(val || `Spieler ${i+1}`);
+                }
+                
+                const all = [...humans];
+                for (let i = 0; i < 5 - humanCount; i++) all.push(`Bot ${i+1}`);
+                
+                const rolesArr = ['Liberal', 'Liberal', 'Liberal', 'Faschist', 'Hitler'];
+                shuffle(rolesArr);
+                
+                const roleMap = {};
+                all.forEach((n, i) => roleMap[n] = rolesArr[i]);
+                
+                state = {
+                    screen: 'reveal',
+                    players: all,
+                    humanPlayers: humans,
+                    roles: roleMap,
+                    deck: createDeck(),
+                    discard: [],
+                    liberalScore: 0,
+                    fascistScore: 0,
+                    electionTracker: 0,
+                    round: 1,
+                    president: all[0],
+                    chancellor: null,
+                    lastChancellor: null,
+                    phase: 'nomination',
+                    hand: [],
+                    dead: [],
+                    investigated: [],
+                    revealIndex: 0,
+                    logs: []
+                };
+                
+                addLog('🎮 Spiel gestartet');
+                saveState();
+                showScreen('reveal');
+                renderReveal();
+            } catch (e) {
+                alert('Fehler: ' + e.message);
+            }
+        }
+
+        function createDeck() {
+            let d = [];
+            for (let i = 0; i < 6; i++) d.push('liberal');
+            for (let i = 0; i < 11; i++) d.push('fascist');
+            return shuffle(d);
+        }
+
+        function renderReveal() {
+            if (state.revealIndex >= state.players.length) {
+                showScreen('game');
+                renderGame();
+                processTurn();
+                return;
+            }
+            
+            const p = state.players[state.revealIndex];
+            document.getElementById('revealName').textContent = p;
+            const isBotPlayer = isBot(p);
+            document.getElementById('revealBotBadge').style.display = isBotPlayer ? 'block' : 'none';
+            document.getElementById('revealPass').style.display = 'flex';
+            document.getElementById('revealCard').style.display = 'none';
+            
+            if (isBotPlayer) {
+                setTimeout(nextReveal, 100);
+            }
+        }
+
+        function showRole() {
+            const p = state.players[state.revealIndex];
+            const r = state.roles[p];
+            const card = document.getElementById('roleCard');
+            
+            card.className = 'role-card ' + (r === 'Liberal' ? 'liberal' : r === 'Faschist' ? 'fascist' : 'hitler');
+            document.getElementById('roleIcon').textContent = r === 'Liberal' ? '🕊️' : r === 'Faschist' ? '🐍' : '☠️';
+            document.getElementById('roleTitle').textContent = r;
+            
+            let desc = '';
+            if (r === 'Liberal') desc = 'Du bist Liberal.\nFinde und stoppe Hitler.';
+            else if (r === 'Faschist') {
+                const hitler = state.players.find(x => state.roles[x] === 'Hitler');
+                desc = `Hitler: ${hitler}\nTäusche die Liberalen.`;
+            } else {
+                const fas = state.players.find(x => state.roles[x] === 'Faschist');
+                desc = `Dein Faschist: ${fas}\nSei vorsichtig!`;
+            }
+            document.getElementById('roleDesc').textContent = desc;
+            
+            document.getElementById('revealPass').style.display = 'none';
+            document.getElementById('revealCard').style.display = 'flex';
+        }
+
+        function nextReveal() {
+            state.revealIndex++;
+            saveState();
+            renderReveal();
+        }
+
+        function renderGame() {
+            document.getElementById('scoreLib').textContent = state.liberalScore;
+            document.getElementById('scoreFas').textContent = state.fascistScore;
+            document.getElementById('roundDisplay').textContent = state.round;
+            document.getElementById('failDisplay').textContent = `${state.electionTracker}/3`;
+            document.getElementById('deckDisplay').textContent = state.deck.length;
+            document.getElementById('discardDisplay').textContent = state.discard.length;
+            
+            renderPlayers();
+            updatePhaseUI();
+        }
+
+        function renderPlayers() {
+            const container = document.getElementById('playerListContainer');
+            container.innerHTML = '<h3>Spieler</h3>';
+            
+            state.players.forEach(p => {
+                if (state.dead.includes(p)) return;
+                const row = document.createElement('div');
+                row.className = 'player-row';
+                if (isBot(p)) row.classList.add('bot');
+                if (p === state.president) row.classList.add('president');
+                if (p === state.chancellor) row.classList.add('chancellor');
+                if (p === state.lastChancellor) row.style.opacity = '0.5';
+                
+                const inv = state.investigated.includes(p) ? ` <span style="color:var(--gold);font-size:11px;">[${state.roles[p]}]</span>` : '';
+                
+                row.innerHTML = `
+                    <div class="player-name">${isBot(p) ? '<span class="bot-icon">🤖</span>' : ''}${p}${inv}</div>
+                    <div class="player-meta">${p === state.president ? '👑 Präsident' : p === state.chancellor ? '⚡ Kanzler' : isBot(p) ? 'KI' : 'Mitglied'}</div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function updatePhaseUI() {
+            const ind = document.getElementById('phaseIndicator');
+            const title = document.getElementById('phaseTitle');
+            const text = document.getElementById('phaseText');
+            const foot = document.getElementById('gameFooter');
+            const btn = document.getElementById('mainActionBtn');
+            
+            // KORREKTUR: Bestimme korrekt, wer am Zug ist
+            let activePlayer = null;
+            let isBotTurn = false;
+            
+            if (state.phase === 'nomination') {
+                activePlayer = state.president;
+                isBotTurn = isBot(state.president);
+            } else if (state.phase === 'legislative') {
+                if (!state.hand || state.hand.length === 0) {
+                    // Präsident muss ziehen
+                    activePlayer = state.president;
+                    isBotTurn = isBot(state.president);
+                } else {
+                    // Kanzler muss spielen
+                    activePlayer = state.chancellor;
+                    isBotTurn = isBot(state.chancellor);
+                }
+            } else if (state.phase === 'power') {
+                activePlayer = state.president;
+                isBotTurn = isBot(state.president);
+            }
+            
+            // Button Handler
+            btn.onclick = function() {
+                handlePlayerAction();
+            };
+            
+            if (isBotTurn) {
+                ind.classList.add('bot-turn');
+                title.textContent = '⚡ KI AM ZUG';
+                text.textContent = (activePlayer || 'KI') + ' handelt...';
+                foot.style.display = 'none';
+            } else {
+                ind.classList.remove('bot-turn');
+                foot.style.display = 'flex';
+                
+                switch(state.phase) {
+                    case 'nomination':
+                        title.textContent = 'NOMINIERUNG';
+                        text.textContent = state.president + ', wähle einen Kanzler!';
+                        btn.textContent = 'Kanzler Wählen';
+                        break;
+                    case 'legislative':
+                        if (!state.hand || state.hand.length === 0) {
+                            // Präsident muss ziehen
+                            title.textContent = 'PRÄSIDENT';
+                            text.textContent = 'Ziehe 3 Karten';
+                            btn.textContent = 'Karten Ziehen';
+                        } else {
+                            // Kanzler wählt
+                            title.textContent = 'KANZLER';
+                            text.textContent = (state.chancellor || 'Du') + ', wähle ein Gesetz!';
+                            btn.textContent = 'Gesetz Wählen';
+                        }
+                        break;
+                    case 'power':
+                        title.textContent = 'SONDERMACHT';
+                        text.textContent = 'Führe Aktion aus';
+                        btn.textContent = 'Ausführen';
+                        break;
+                }
+            }
+        }
+
+        function handlePlayerAction() {
+            console.log('Aktion:', state.phase, 'Hand:', state.hand);
+            switch(state.phase) {
+                case 'nomination':
+                    playerNominate();
+                    break;
+                case 'legislative':
+                    if (!state.hand || state.hand.length === 0) {
+                        playerDrawCards();
+                    } else {
+                        playerPlayCard();
+                    }
+                    break;
+                case 'power':
+                    playerPower();
+                    break;
+            }
+        }
+
+        function processTurn() {
+            if (state.phase === 'nomination' && isBot(state.president)) {
+                setTimeout(botNominate, 100);
+            } else if (state.phase === 'legislative') {
+                // Bestimme wer ziehen muss
+                const needToDraw = !state.hand || state.hand.length === 0;
+                if (needToDraw && isBot(state.president)) {
+                    setTimeout(botDraw, 100);
+                } else if (!needToDraw && isBot(state.chancellor)) {
+                    setTimeout(botPlay, 100);
+                }
+            } else if (state.phase === 'power' && isBot(state.president)) {
+                setTimeout(botPower, 100);
+            }
+        }
+
+        // BOT AKTIONEN
+        function botNominate() {
+            const alive = state.players.filter(p => !state.dead.includes(p));
+            const eligible = alive.filter(p => p !== state.president && p !== state.lastChancellor);
+            
+            // Fallback wenn niemand eligible ist (sollte nicht passieren, aber sicher ist sicher)
+            if (eligible.length === 0) {
+                eligible.push(...alive.filter(p => p !== state.president));
+            }
+            
+            const role = state.roles[state.president];
+            let choice;
+            
+            if (role !== 'Liberal') {
+                // Faschist Logik
+                const hitler = eligible.find(p => state.roles[p] === 'Hitler');
+                const fascist = eligible.find(p => state.roles[p] === 'Faschist');
+                if (state.fascistScore >= 3 && hitler) choice = hitler;
+                else if (fascist) choice = fascist;
+                else if (hitler) choice = hitler;
+                else choice = eligible[Math.floor(Math.random() * eligible.length)];
+            } else {
+                choice = eligible[Math.floor(Math.random() * eligible.length)];
+            }
+            
+            state.chancellor = choice;
+            addLog(`${state.president} nominiert ${choice}`, 'bot');
+            
+            // Sofort zu Voting (Turbo)
+            state.phase = 'voting';
+            saveState();
+            renderGame();
+            
+            setTimeout(() => {
+                approveGovernment();
+            }, 200);
+        }
+
+        function approveGovernment() {
+            state.electionTracker = 0;
+            if (state.fascistScore >= 3 && state.roles[state.chancellor] === 'Hitler') {
+                endGame('fascist', 'Hitler wurde Kanzler!');
+                return;
+            }
+            state.phase = 'legislative';
+            saveState();
+            renderGame();
+            processTurn();
+        }
+
+        function botDraw() {
+            if (state.deck.length < 3) reshuffle();
+            state.hand = [state.deck.pop(), state.deck.pop(), state.deck.pop()];
+            const role = state.roles[state.president];
+            
+            // Bot entscheidet welche Karte abzuwerfen
+            let discardIdx;
+            if (role === 'Liberal') {
+                // Liberal wirft Faschist ab falls möglich, sonst erste
+                const fasIdx = state.hand.indexOf('fascist');
+                discardIdx = fasIdx !== -1 ? fasIdx : 0;
+            } else {
+                // Faschist wirft Liberal ab falls möglich, sonst erste
+                const libIdx = state.hand.indexOf('liberal');
+                discardIdx = libIdx !== -1 ? libIdx : 0;
+            }
+            
+            state.discard.push(state.hand.splice(discardIdx, 1)[0]);
+            addLog(`${state.president} gibt 2 Karten an ${state.chancellor}`, 'bot');
+            
+            saveState();
+            
+            if (isBot(state.chancellor)) {
+                setTimeout(botPlay, 100);
+            } else {
+                renderGame(); // Zeige dem menschlichen Kanzler den Button
+            }
+        }
+
+        function botPlay() {
+            const role = state.roles[state.chancellor];
+            let cardIdx;
+            
+            if (role === 'Liberal') {
+                // Spielt Liberal wenn möglich
+                cardIdx = state.hand.indexOf('liberal') !== -1 ? state.hand.indexOf('liberal') : 0;
+            } else {
+                // Spielt Faschist wenn möglich
+                cardIdx = state.hand.indexOf('fascist') !== -1 ? state.hand.indexOf('fascist') : 0;
+            }
+            
+            const card = state.hand[cardIdx];
+            playCard(card);
+        }
+
+        function botPower() {
+            const next = state.fascistScore;
+            if (next === 3) {
+                const targets = state.players.filter(p => !state.dead.includes(p) && p !== state.president && !state.investigated.includes(p));
+                if (targets.length > 0) {
+                    const target = targets[Math.floor(Math.random() * targets.length)];
+                    state.investigated.push(target);
+                    addLog(`${state.president} untersucht ${target}`, 'bot');
+                }
+                nextTurn();
+            } else {
+                const targets = state.players.filter(p => !state.dead.includes(p) && p !== state.president);
+                if (targets.length > 0) {
+                    const target = targets[Math.floor(Math.random() * targets.length)];
+                    state.dead.push(target);
+                    addLog(`${target} wurde exekutiert!`, 'important');
+                    if (state.roles[target] === 'Hitler') {
+                        endGame('liberal', 'Hitler ist tot!');
+                        return;
+                    }
+                }
+                nextTurn();
+            }
+        }
+
+        // SPIELER AKTIONEN
+        function playerNominate() {
+            const alive = state.players.filter(p => !state.dead.includes(p));
+            const eligible = alive.filter(p => p !== state.president && p !== state.lastChancellor);
+            
+            if (eligible.length === 0) {
+                alert('Fehler: Keine eligible Kanzlerkandidaten!');
+                return;
+            }
+            
+            const content = document.getElementById('actionContent');
+            content.innerHTML = '';
+            
+            eligible.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.style.margin = '5px';
+                btn.style.width = '100%';
+                btn.innerHTML = (isBot(p) ? '🤖 ' : '') + p;
+                btn.onclick = () => {
+                    state.chancellor = p;
+                    closeOverlay();
+                    approveGovernment();
+                };
+                content.appendChild(btn);
+            });
+            
+            document.getElementById('actionTitle').textContent = 'Kanzler Wählen';
+            document.getElementById('actionDesc').textContent = 'Wähle deinen Kanzlerkandidaten';
+            document.getElementById('overlay-action').classList.add('visible');
+        }
+
+        function playerDrawCards() {
+            if (state.deck.length < 3) reshuffle();
+            state.hand = [state.deck.pop(), state.deck.pop(), state.deck.pop()];
+            saveState();
+            
+            const content = document.getElementById('actionContent');
+            content.innerHTML = '<div style="color:#888; margin-bottom:20px; text-align:center;">Wähle 1 Karte zum Verwerfen (an den Präsidenten):</div>';
+            
+            state.hand.forEach((card, i) => {
+                const div = document.createElement('div');
+                div.className = `policy-card ${card}`;
+                div.innerHTML = `<div style="font-weight:bold;">${card}</div>`;
+                div.onclick = () => {
+                    state.discard.push(state.hand.splice(i, 1)[0]);
+                    closeOverlay();
+                    addLog(`${state.president} verwirft 1 Karte`);
+                    saveState();
+                    
+                    if (isBot(state.chancellor)) {
+                        setTimeout(botPlay, 100);
+                        renderGame();
+                    } else {
+                        // Wenn menschlicher Kanzler, zeige ihm die verbleibenden 2
+                        renderGame(); // Update UI damit er sieht dass er dran ist
+                    }
+                };
+                content.appendChild(div);
+            });
+            
+            document.getElementById('actionTitle').textContent = 'Präsident';
+            document.getElementById('actionDesc').textContent = 'Wähle welche Karte du verwerfen willst';
+            document.getElementById('overlay-action').classList.add('visible');
+        }
+
+        function playerPlayCard() {
+            const content = document.getElementById('actionContent');
+            content.innerHTML = '<div style="color:#888; margin-bottom:20px; text-align:center;">Wähle das Gesetz zum Erlassen:</div>';
+            
+            state.hand.forEach((card, i) => {
+                const div = document.createElement('div');
+                div.className = `policy-card ${card}`;
+                div.innerHTML = `<div style="font-weight:bold;">${card}</div>`;
+                div.onclick = () => {
+                    closeOverlay();
+                    playCard(card);
+                };
+                content.appendChild(div);
+            });
+            
+            document.getElementById('actionTitle').textContent = 'Kanzler';
+            document.getElementById('actionDesc').textContent = 'Wähle das Gesetz';
+            document.getElementById('overlay-action').classList.add('visible');
+        }
+
+        function playerPower() {
+            const next = state.fascistScore;
+            const content = document.getElementById('actionContent');
+            content.innerHTML = '';
+            
+            if (next === 3) {
+                const targets = state.players.filter(p => !state.dead.includes(p) && p !== state.president && !state.investigated.includes(p));
+                if (targets.length === 0) {
+                    addLog('Niemand zum Untersuchen übrig');
+                    nextTurn();
+                    return;
+                }
+                targets.forEach(p => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn';
+                    btn.style.margin = '5px';
+                    btn.style.width = '100%';
+                    btn.innerHTML = (isBot(p) ? '🤖 ' : '') + p;
+                    btn.onclick = () => {
+                        state.investigated.push(p);
+                        const party = state.roles[p] === 'Liberal' ? 'LIBERAL' : 'FASCHIST';
+                        alert(`${p} ist: ${party}`);
+                        closeOverlay();
+                        nextTurn();
+                    };
+                    content.appendChild(btn);
+                });
+                document.getElementById('actionTitle').textContent = 'Untersuchung';
+                document.getElementById('actionDesc').textContent = 'Wähle einen Spieler';
+            } else {
+                const targets = state.players.filter(p => !state.dead.includes(p) && p !== state.president);
+                if (targets.length === 0) {
+                    addLog('Niemand zum Exekutieren übrig');
+                    nextTurn();
+                    return;
+                }
+                targets.forEach(p => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn';
+                    btn.style.margin = '5px';
+                    btn.style.width = '100%';
+                    btn.style.borderColor = 'var(--danger)';
+                    btn.style.color = 'var(--danger)';
+                    btn.innerHTML = '💀 ' + (isBot(p) ? '🤖 ' : '') + p;
+                    btn.onclick = () => {
+                        if (confirm(`${p} wirklich erschießen?`)) {
+                            state.dead.push(p);
+                            if (state.roles[p] === 'Hitler') {
+                                endGame('liberal', 'Hitler ist tot!');
+                            } else {
+                                closeOverlay();
+                                nextTurn();
+                            }
+                        }
+                    };
+                    content.appendChild(btn);
+                });
+                document.getElementById('actionTitle').textContent = 'Exekution';
+                document.getElementById('actionDesc').textContent = 'Wähle ein Ziel';
+            }
+            document.getElementById('overlay-action').classList.add('visible');
+        }
+
+        function playCard(card) {
+            state.hand = [];
+            if (card === 'liberal') {
+                state.liberalScore++;
+                addLog(`Liberal-Gesetz erlassen (${state.liberalScore}/5)`, 'new');
+                if (state.liberalScore >= 5) {
+                    endGame('liberal', '5 Liberale Gesetze!');
+                    return;
+                }
+            } else {
+                state.fascistScore++;
+                addLog(`Faschist-Gesetz erlassen (${state.fascistScore}/6)`, 'important');
+                if (state.fascistScore >= 6) {
+                    endGame('fascist', '6 Faschistische Gesetze!');
+                    return;
+                }
+            }
+            
+            if (card === 'fascist' && [3,4,5].includes(state.fascistScore)) {
+                state.phase = 'power';
+                saveState();
+                renderGame();
+                processTurn();
+            } else {
+                nextTurn();
+            }
+        }
+
+        function nextTurn() {
+            const alive = state.players.filter(p => !state.dead.includes(p));
+            let idx = alive.indexOf(state.president);
+            idx = (idx + 1) % alive.length;
+            state.president = alive[idx];
+            state.lastChancellor = state.chancellor;
+            state.chancellor = null;
+            state.round++;
+            state.phase = 'nomination';
+            addLog(`Runde ${state.round}: ${state.president} ist Präsident ${isBot(state.president) ? '(KI)' : ''}`, isBot(state.president) ? 'bot' : 'normal');
+            saveState();
+            renderGame();
+            processTurn();
+        }
+
+        function reshuffle() {
+            state.deck = shuffle([...state.deck, ...state.discard]);
+            state.discard = [];
+            addLog('Karten neu gemischt');
+        }
+
+        function endGame(winner, msg) {
+            setTimeout(() => {
+                alert((winner === 'liberal' ? '🕊️ ' : '🐍 ') + msg);
+                resetGame();
+            }, 300);
+        }
+
+        function closeOverlay() {
+            document.getElementById('overlay-action').classList.remove('visible');
+        }
+
+        function toggleLog() {
+            const ov = document.getElementById('overlay-log');
+            ov.classList.toggle('visible');
+            if (ov.classList.contains('visible')) {
+                const c = document.getElementById('logContent');
+                c.innerHTML = (state.logs || []).map(l => 
+                    `<div class="log-entry ${l.type}"><span style="color:#444; font-size:10px;">${l.time}</span> ${l.msg}</div>`
+                ).join('');
+                c.scrollTop = 0;
+            }
+        }
+
+        function addLog(msg, type = 'normal') {
+            if (!state.logs) state.logs = [];
+            const now = new Date();
+            const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+            state.logs.unshift({time: t, msg: msg, type: type});
+            if (state.logs.length > 50) state.logs.pop();
+            saveState();
+        }
+
+        function showRules() {
+            alert('Secret Hitler - 5 Spieler\n\n3-5 Menschliche Spieler, Rest wird mit KI aufgefüllt.\n\nZiel:\n• Liberal: 5 Gesetze oder Hitler tot\n• Faschist: 6 Gesetze oder Hitler Kanzler (ab 3 fasch. Gesetzen)\n\n⚡ Turbo-Modus: KI reagiert sofort!');
+        }
+
+        function resumeGame() {
+            showScreen(state.screen === 'reveal' ? 'reveal' : 'game');
+            if (state.screen === 'reveal') renderReveal();
+            else renderGame();
+        }
+
+        function resetGame() {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    </script>
+</body>
+</html>
