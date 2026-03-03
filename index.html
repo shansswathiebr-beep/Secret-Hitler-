@@ -21,7 +21,6 @@
             --text: #f1f5f9;
             --text-dim: #64748b;
             --border: rgba(0, 212, 255, 0.3);
-            --gold: #ffd700;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,29 +33,6 @@
             width: 100vw;
         }
 
-        /* DEBUG PANEL */
-        .debug-panel {
-            position: fixed;
-            top: 60px;
-            left: 10px;
-            background: rgba(0,0,0,0.95);
-            border: 1px solid var(--orange);
-            padding: 15px;
-            border-radius: 8px;
-            z-index: 100000;
-            max-width: 350px;
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            color: var(--orange);
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-        }
-        .debug-panel.active { display: block; }
-        .debug-line { margin: 2px 0; word-break: break-all; }
-
-        /* RADIO BAR - Premium Design */
         .radio-bar {
             position: fixed;
             top: 0;
@@ -71,7 +47,6 @@
             z-index: 10001;
             backdrop-filter: blur(20px);
             gap: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
         
         .radio-brand {
@@ -83,7 +58,6 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0,212,255,0.5);
         }
         
         .radio-brand i {
@@ -123,7 +97,6 @@
             background: var(--cyan);
             color: #000;
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0,212,255,0.5);
         }
         
         .radio-btn.playing {
@@ -168,7 +141,6 @@
             background: var(--cyan);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,212,255,0.5);
         }
         
         .station-select {
@@ -179,14 +151,8 @@
             border-radius: 6px;
             font-size: 0.85rem;
             cursor: pointer;
-            outline: none;
-        }
-        
-        .station-select:focus {
-            border-color: var(--cyan);
         }
 
-        /* TELEGRAM PANEL */
         .telegram-panel {
             position: fixed;
             top: 50px;
@@ -200,7 +166,6 @@
             display: flex;
             flex-direction: column;
             backdrop-filter: blur(20px);
-            box-shadow: -5px 0 30px rgba(0,0,0,0.8);
         }
         
         .telegram-panel.open { right: 0; }
@@ -211,44 +176,12 @@
             background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(0,0,0,0) 100%);
         }
         
-        .tg-title {
-            color: var(--cyan);
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-        }
+        .tg-title { color: var(--cyan); font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .tg-subtitle { color: var(--text-dim); font-size: 0.8rem; margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+        .tg-status { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         
-        .tg-subtitle {
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .tg-status {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            display: inline-block;
-            animation: blink 2s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        .tg-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background: rgba(0,0,0,0.2);
-        }
+        .tg-messages { flex: 1; overflow-y: auto; padding: 15px; background: rgba(0,0,0,0.2); }
         
         .tg-message {
             background: rgba(0,212,255,0.05);
@@ -258,7 +191,6 @@
             border-radius: 0 10px 10px 0;
             font-size: 0.9rem;
             animation: slideIn 0.3s ease;
-            word-break: break-word;
         }
         
         @keyframes slideIn {
@@ -266,53 +198,14 @@
             to { opacity: 1; transform: translateX(0); }
         }
         
-        .tg-message.user {
-            border-left-color: var(--green);
-            background: rgba(16,185,129,0.05);
-        }
+        .tg-message.user { border-left-color: var(--green); background: rgba(16,185,129,0.05); }
+        .tg-message.bot { border-left-color: var(--purple); background: rgba(139,92,246,0.05); }
+        .tg-message.system { border-left-color: var(--orange); background: rgba(245,158,11,0.05); font-style: italic; }
+        .tg-message-time { font-size: 0.75rem; color: var(--text-dim); margin-top: 5px; font-family: 'Courier New', monospace; }
         
-        .tg-message.bot {
-            border-left-color: var(--purple);
-            background: rgba(139,92,246,0.05);
-        }
-        
-        .tg-message.system {
-            border-left-color: var(--orange);
-            background: rgba(245,158,11,0.05);
-            font-style: italic;
-        }
-        
-        .tg-message-time {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-top: 5px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .tg-input-area {
-            padding: 15px;
-            border-top: 1px solid var(--border);
-            background: rgba(0,0,0,0.3);
-        }
-        
-        .tg-input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.2s;
-        }
-        
-        .tg-input:focus {
-            border-color: var(--cyan);
-            background: rgba(255,255,255,0.08);
-        }
+        .tg-input-area { padding: 15px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.3); }
+        .tg-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-family: inherit; font-size: 0.9rem; outline: none; }
+        .tg-input:focus { border-color: var(--cyan); }
         
         .tg-bot-link {
             display: block;
@@ -325,12 +218,6 @@
             background: rgba(0,212,255,0.1);
             border-radius: 8px;
             border: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-        
-        .tg-bot-link:hover {
-            background: rgba(0,212,255,0.2);
-            transform: translateY(-1px);
         }
 
         .tg-send {
@@ -347,22 +234,10 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        
-        .tg-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,212,255,0.4);
-        }
-        
-        .tg-send:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .tg-send:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,212,255,0.4); }
+        .tg-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* MAP */
         #map {
             position: absolute;
             top: 50px;
@@ -373,7 +248,6 @@
             background: var(--bg-deep);
         }
 
-        /* TICKER - Langsamer */
         .ticker {
             position: fixed;
             bottom: 0;
@@ -386,7 +260,6 @@
             z-index: 1000;
             display: flex;
             align-items: center;
-            backdrop-filter: blur(10px);
         }
         
         .ticker-content {
@@ -410,17 +283,9 @@
             font-family: 'Courier New', monospace;
         }
         
-        .ticker-item.alert {
-            color: var(--red);
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(244,63,94,0.5);
-        }
-        
-        .ticker-item.success {
-            color: var(--green);
-        }
+        .ticker-item.alert { color: var(--red); font-weight: 600; }
+        .ticker-item.success { color: var(--green); }
 
-        /* SCANNER OVERLAY */
         .scanner-overlay {
             position: fixed;
             inset: 0;
@@ -430,9 +295,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
         }
-        
         .scanner-overlay.active { display: flex; }
         
         .scanner-globe {
@@ -442,13 +305,10 @@
             border-radius: 50%;
             position: relative;
             animation: rotate 20s linear infinite;
-            box-shadow: 0 0 60px rgba(0,212,255,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+            box-shadow: 0 0 60px rgba(0,212,255,0.3);
         }
         
-        @keyframes rotate { 
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); } 
-        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
         .scanner-line {
             position: absolute;
@@ -458,7 +318,6 @@
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--cyan), transparent);
             animation: scan 3s linear infinite;
-            box-shadow: 0 0 10px var(--cyan);
         }
         
         @keyframes scan { 
@@ -467,39 +326,11 @@
             100% { transform: translateY(100px); opacity: 0; }
         }
         
-        .scanner-info {
-            margin-top: 40px;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .scanner-source { 
-            color: var(--cyan); 
-            font-size: 1.3rem; 
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(0,212,255,0.5);
-            font-weight: 600;
-        }
-        
-        .scanner-progress {
-            width: 400px;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin: 20px auto;
-            border: 1px solid rgba(0,212,255,0.3);
-        }
-        
-        .scanner-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--cyan), var(--green));
-            width: 0%;
-            transition: width 0.3s;
-            box-shadow: 0 0 10px rgba(0,212,255,0.5);
-        }
+        .scanner-info { margin-top: 40px; text-align: center; font-family: 'Courier New', monospace; }
+        .scanner-source { color: var(--cyan); font-size: 1.3rem; margin-bottom: 15px; font-weight: 600; }
+        .scanner-progress { width: 400px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin: 20px auto; }
+        .scanner-bar { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); width: 0%; transition: width 0.3s; }
 
-        /* TOP CONTROLS */
         .top-controls {
             position: fixed;
             top: 60px;
@@ -524,37 +355,12 @@
             gap: 10px;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-size: 0.9rem;
         }
         
-        .control-btn:hover {
-            background: var(--cyan);
-            color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,212,255,0.4);
-        }
-        
-        .control-btn.secondary {
-            border-color: var(--text-dim);
-            color: var(--text-dim);
-        }
-        
-        .control-btn.secondary:hover {
-            border-color: var(--cyan);
-            color: #000;
-        }
+        .control-btn:hover { background: var(--cyan); color: #000; transform: translateY(-2px); }
+        .control-btn.secondary { border-color: var(--text-dim); color: var(--text-dim); }
+        .control-btn.secondary:hover { border-color: var(--cyan); color: #000; }
 
-        .control-btn.danger {
-            border-color: var(--red);
-            color: var(--red);
-        }
-        
-        .control-btn.danger:hover {
-            background: var(--red);
-            color: white;
-        }
-
-        /* TELEGRAM TOGGLE */
         .tg-toggle {
             position: fixed;
             top: 60px;
@@ -575,18 +381,9 @@
             transition: all 0.3s;
         }
         
-        .tg-toggle:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 6px 30px rgba(0,212,255,0.7);
-        }
-        
-        .tg-toggle.open {
-            right: 390px;
-            background: var(--red);
-            transform: rotate(180deg);
-        }
+        .tg-toggle:hover { transform: scale(1.1); }
+        .tg-toggle.open { right: 390px; background: var(--red); transform: rotate(180deg); }
 
-        /* POPUPS */
         .leaflet-popup-content-wrapper {
             background: var(--bg-panel);
             color: var(--text);
@@ -595,45 +392,11 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         
-        .leaflet-popup-tip {
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-        }
-        
-        .popup-title { 
-            color: var(--cyan); 
-            font-weight: 700; 
-            font-size: 1.2rem; 
-            margin-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 5px;
-        }
-        
-        .popup-source { 
-            font-size: 0.8rem; 
-            color: var(--text-dim); 
-            margin-bottom: 10px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .popup-desc { 
-            font-size: 0.95rem; 
-            line-height: 1.5; 
-            margin-bottom: 10px;
-            color: var(--text);
-        }
-        
-        .popup-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            border-top: 1px solid var(--border);
-            padding-top: 8px;
-            margin-top: 8px;
-        }
+        .popup-title { color: var(--cyan); font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .popup-source { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; font-family: 'Courier New', monospace; }
+        .popup-desc { font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; }
+        .popup-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px; }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .radio-bar { padding: 0 10px; gap: 8px; }
             .radio-station { min-width: auto; font-size: 0.75rem; }
@@ -648,7 +411,6 @@
             .scanner-progress { width: 90%; }
         }
 
-        /* ERROR INDICATOR */
         .error-indicator {
             position: fixed;
             bottom: 50px;
@@ -661,17 +423,10 @@
             display: none;
             animation: pulse-error 2s infinite;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(244,63,94,0.5);
         }
-        
         .error-indicator.show { display: flex; align-items: center; gap: 10px; }
-        
-        @keyframes pulse-error {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(244,63,94,0.6); }
-            50% { opacity: 0.9; box-shadow: 0 0 0 20px rgba(244,63,94,0); }
-        }
+        @keyframes pulse-error { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
 
-        /* STATS BOX */
         .stat-box {
             background: rgba(255,255,255,0.05);
             padding: 20px;
@@ -681,50 +436,26 @@
             min-width: 100px;
             text-align: center;
         }
-        
-        .stat-value { 
-            color: var(--cyan); 
-            font-size: 2rem; 
-            font-weight: 800;
-            text-shadow: 0 0 10px rgba(0,212,255,0.5);
-        }
-        
-        .stat-label { 
-            color: var(--text-dim); 
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
-        }
+        .stat-value { color: var(--cyan); font-size: 2rem; font-weight: 800; }
+        .stat-label { color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <!-- DEBUG PANEL -->
-    <div class="debug-panel" id="debugPanel">
-        <div style="color: var(--orange); font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--orange); padding-bottom: 5px;">
-            SYSTEM DEBUG LOG
-        </div>
-        <div id="debugContent"></div>
-    </div>
-
-    <!-- ERROR INDICATOR -->
     <div class="error-indicator" id="errorIndicator">
         <i class="fas fa-exclamation-triangle"></i>
         <span id="errorText">System Error</span>
     </div>
 
-    <!-- AUDIO ELEMENT -->
     <audio id="radioPlayer" preload="none" crossorigin="anonymous"></audio>
 
-    <!-- RADIO BAR -->
     <div class="radio-bar">
         <div class="radio-brand">
             <i class="fas fa-broadcast-tower"></i>
             <span>WARMAP RADIO</span>
         </div>
         
-        <button class="radio-btn" id="playBtn" onclick="toggleRadio()" title="Play/Pause">
+        <button class="radio-btn" id="playBtn" onclick="toggleRadio()">
             <i class="fas fa-play"></i>
         </button>
         
@@ -733,231 +464,401 @@
             <span>24/7 Global News</span>
         </div>
         
-        <input type="range" class="volume-slider" min="0" max="100" value="70" oninput="setVolume(this.value)" title="Volume">
+        <input type="range" class="volume-slider" min="0" max="100" value="70" oninput="setVolume(this.value)">
         
-        <select class="station-select" onchange="changeStation(this.value)" title="Select Station">
+        <select class="station-select" onchange="changeStation(this.value)">
             <option value="bbc">BBC World Service</option>
             <option value="dw">Deutsche Welle</option>
             <option value="rfi">RFI English</option>
             <option value="npr">NPR News</option>
-            <option value="srf">SRF Info (CH)</option>
+            <option value="srf">SRF Info</option>
             <option value="franceinfo">France Info</option>
         </select>
         
-        <div style="margin-left: auto; display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: var(--text-dim);">
+        <div style="margin-left: auto; display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-dim);">
             <span id="sourceCount">250 Sources</span>
             <span id="markerStat">0 Markers</span>
-            <button onclick="toggleDebug()" style="background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 5px;" title="Debug Mode">
-                <i class="fas fa-bug"></i>
-            </button>
         </div>
     </div>
 
-    <!-- TELEGRAM PANEL -->
     <div class="telegram-panel" id="telegramPanel">
         <div class="tg-header">
-            <div class="tg-title">
-                <i class="fab fa-telegram"></i>
-                @In4real_bot
-            </div>
-            <div class="tg-subtitle">
-                <span class="tg-status"></span>
-                <span id="connStatus">Intelligence Feed Connected</span>
-            </div>
+            <div class="tg-title"><i class="fab fa-telegram"></i> @In4real_bot</div>
+            <div class="tg-subtitle"><span class="tg-status"></span> Intelligence Feed</div>
         </div>
-        
         <div class="tg-messages" id="tgMessages">
             <div class="tg-message system">
-                <div><strong>System:</strong> Verbindung zu @In4real_bot wird hergestellt...</div>
+                <div><strong>System:</strong> Verbindung wird hergestellt...</div>
                 <div class="tg-message-time">Just now</div>
             </div>
         </div>
-        
         <div class="tg-input-area">
             <a href="https://t.me/In4real_bot" target="_blank" class="tg-bot-link">
-                <i class="fab fa-telegram"></i> Öffne @In4real_bot in Telegram
+                <i class="fab fa-telegram"></i> Öffne @In4real_bot
             </a>
-            <input type="text" class="tg-input" id="tgInput" placeholder="Nachricht an Bot..." maxlength="500" onkeypress="if(event.key==='Enter')sendTelegramMessage()">
+            <input type="text" class="tg-input" id="tgInput" placeholder="Nachricht..." maxlength="500" onkeypress="if(event.key==='Enter')sendTelegramMessage()">
             <button class="tg-send" id="tgSendBtn" onclick="sendTelegramMessage()">
                 <i class="fas fa-paper-plane"></i> Senden
             </button>
         </div>
     </div>
 
-    <!-- TELEGRAM TOGGLE -->
-    <button class="tg-toggle" id="tgToggle" onclick="toggleTelegram()" title="Telegram Panel">
+    <button class="tg-toggle" id="tgToggle" onclick="toggleTelegram()">
         <i class="fab fa-telegram"></i>
     </button>
 
-    <!-- SCANNER OVERLAY -->
     <div class="scanner-overlay" id="scannerOverlay">
-        <div class="scanner-globe">
-            <div class="scanner-line"></div>
-        </div>
+        <div class="scanner-globe"><div class="scanner-line"></div></div>
         <div class="scanner-info">
-            <div class="scanner-source" id="scanSource">Initializing Global Scan...</div>
-            <div class="scanner-progress">
-                <div class="scanner-bar" id="scanBar"></div>
-            </div>
+            <div class="scanner-source" id="scanSource">Initializing...</div>
+            <div class="scanner-progress"><div class="scanner-bar" id="scanBar"></div></div>
             <div style="display: flex; justify-content: center; margin-top: 30px;">
-                <div class="stat-box">
-                    <div class="stat-value" id="statFound">0</div>
-                    <div class="stat-label">Events Found</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="statAnalyzed">0</div>
-                    <div class="stat-label">Sources Checked</div>
-                </div>
+                <div class="stat-box"><div class="stat-value" id="statFound">0</div><div class="stat-label">Events</div></div>
+                <div class="stat-box"><div class="stat-value" id="statAnalyzed">0</div><div class="stat-label">Sources</div></div>
             </div>
         </div>
     </div>
 
-    <!-- TOP CONTROLS -->
     <div class="top-controls">
         <button class="control-btn" onclick="startGlobalScan()" id="scanBtn">
-            <i class="fas fa-satellite-dish"></i>
-            <span>GLOBAL SCAN</span>
+            <i class="fas fa-satellite-dish"></i><span>GLOBAL SCAN</span>
         </button>
         <button class="control-btn secondary" onclick="clearAllMarkers()">
-            <i class="fas fa-trash"></i>
-            <span>CLEAR MAP</span>
+            <i class="fas fa-trash"></i><span>CLEAR</span>
         </button>
         <button class="control-btn secondary" onclick="exportData()">
-            <i class="fas fa-download"></i>
-            <span>EXPORT JSON</span>
-        </button>
-        <button class="control-btn secondary" onclick="runSelfTest()" style="border-color: var(--orange); color: var(--orange);">
-            <i class="fas fa-vial"></i>
-            <span>SELF TEST</span>
+            <i class="fas fa-download"></i><span>EXPORT</span>
         </button>
     </div>
 
-    <!-- MAP -->
     <div id="map"></div>
 
-    <!-- TICKER -->
     <div class="ticker">
         <div class="ticker-content" id="tickerContent">
-            <div class="ticker-item">WarMap Intelligence System v3.0 • Initializing...</div>
-            <div class="ticker-item">BBC World Service Stream ready</div>
-            <div class="ticker-item">Telegram Bot @In4real_bot standby</div>
-            <div class="ticker-item">250 Global News Sources indexed</div>
+            <div class="ticker-item">WarMap Intelligence System v3.0 • 250 Sources Active</div>
+            <div class="ticker-item">Reuters • AP • AFP • BBC • Al Jazeera • CNN • NYT • Guardian</div>
+            <div class="ticker-item">Telegram: @In4real_bot connected</div>
         </div>
     </div>
 
     <script>
-        // ================== DEBUG SYSTEM ==================
-        const DEBUG = {
-            enabled: false,
-            log: function(msg, type = 'info') {
-                if (!this.enabled) return;
-                const div = document.getElementById('debugContent');
-                const line = document.createElement('div');
-                line.className = 'debug-line';
-                line.style.color = type === 'error' ? '#f43f5e' : type === 'warn' ? '#f59e0b' : '#00d4ff';
-                line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-                div.appendChild(line);
-                div.scrollTop = div.scrollHeight;
-                console.log(`[WarMap ${type}] ${msg}`);
-            }
-        };
+        // ================== 250 NEWS SOURCES ==================
+        const NEWS_SOURCES = [
+            // GLOBAL/WIRE SERVICES (1-20)
+            {id: 0, name: "Reuters London", region: "Global", lat: 51.5074, lng: -0.1278, reliability: 98},
+            {id: 1, name: "AP New York", region: "Global", lat: 40.7589, lng: -73.9851, reliability: 98},
+            {id: 2, name: "AFP Paris", region: "Global", lat: 48.8566, lng: 2.3522, reliability: 97},
+            {id: 3, name: "Bloomberg NYC", region: "Global", lat: 40.7614, lng: -73.9776, reliability: 96},
+            {id: 4, name: "Thomson Reuters", region: "Global", lat: 43.6532, lng: -79.3832, reliability: 98},
+            {id: 5, name: "Reuters Berlin", region: "Global", lat: 52.5200, lng: 13.4050, reliability: 95},
+            {id: 6, name: "AP Tokyo", region: "Global", lat: 35.6762, lng: 139.6503, reliability: 95},
+            {id: 7, name: "AFP Berlin", region: "Global", lat: 52.5200, lng: 13.4050, reliability: 94},
+            {id: 8, name: "Reuters Dubai", region: "Global", lat: 25.2048, lng: 55.2708, reliability: 93},
+            {id: 9, name: "AP London", region: "Global", lat: 51.5074, lng: -0.1278, reliability: 97},
+            {id: 10, name: "Reuters Singapore", region: "Global", lat: 1.3521, lng: 103.8198, reliability: 94},
+            {id: 11, name: "AFP Madrid", region: "Global", lat: 40.4168, lng: -3.7038, reliability: 93},
+            {id: 12, name: "AP Paris", region: "Global", lat: 48.8566, lng: 2.3522, reliability: 96},
+            {id: 13, name: "Reuters Mumbai", region: "Global", lat: 19.0760, lng: 72.8777, reliability: 92},
+            {id: 14, name: "Bloomberg London", region: "Global", lat: 51.5145, lng: -0.0923, reliability: 95},
+            {id: 15, name: "AP Hong Kong", region: "Global", lat: 22.3193, lng: 114.1694, reliability: 94},
+            {id: 16, name: "Reuters Sydney", region: "Global", lat: -33.8688, lng: 151.2093, reliability: 93},
+            {id: 17, name: "AFP Rome", region: "Global", lat: 41.9028, lng: 12.4964, reliability: 92},
+            {id: 18, name: "AP Berlin", region: "Global", lat: 52.5200, lng: 13.4050, reliability: 95},
+            {id: 19, name: "Reuters São Paulo", region: "Global", lat: -23.5505, lng: -46.6333, reliability: 91},
+            
+            // UNITED KINGDOM (20-40)
+            {id: 20, name: "BBC London", region: "EU", lat: 51.5074, lng: -0.1278, reliability: 98},
+            {id: 21, name: "The Guardian", region: "EU", lat: 51.5073, lng: -0.1277, reliability: 94},
+            {id: 22, name: "The Times", region: "EU", lat: 51.5074, lng: -0.1276, reliability: 93},
+            {id: 23, name: "Daily Telegraph", region: "EU", lat: 51.5075, lng: -0.1275, reliability: 88},
+            {id: 24, name: "Financial Times", region: "EU", lat: 51.5074, lng: -0.1274, reliability: 96},
+            {id: 25, name: "The Independent", region: "EU", lat: 51.5073, lng: -0.1273, reliability: 90},
+            {id: 26, name: "Sky News", region: "EU", lat: 51.5074, lng: -0.1272, reliability: 89},
+            {id: 27, name: "ITV News", region: "EU", lat: 51.5074, lng: -0.1271, reliability: 88},
+            {id: 28, name: "Channel 4 News", region: "EU", lat: 51.5074, lng: -0.1270, reliability: 89},
+            {id: 29, name: "The Economist", region: "EU", lat: 51.5074, lng: -0.1269, reliability: 97},
+            {id: 30, name: "BBC Manchester", region: "EU", lat: 53.4808, lng: -2.2426, reliability: 92},
+            {id: 31, name: "BBC Scotland", region: "EU", lat: 55.9533, lng: -3.1883, reliability: 91},
+            {id: 32, name: "BBC Wales", region: "EU", lat: 51.4816, lng: -3.1791, reliability: 90},
+            {id: 33, name: "The Sun", region: "EU", lat: 51.5074, lng: -0.1268, reliability: 75},
+            {id: 34, name: "Daily Mail", region: "EU", lat: 51.5074, lng: -0.1267, reliability: 76},
+            {id: 35, name: "Daily Mirror", region: "EU", lat: 51.5074, lng: -0.1266, reliability: 78},
+            {id: 36, name: "Evening Standard", region: "EU", lat: 51.5074, lng: -0.1265, reliability: 82},
+            {id: 37, name: "The Spectator", region: "EU", lat: 51.5074, lng: -0.1264, reliability: 85},
+            {id: 38, name: "New Statesman", region: "EU", lat: 51.5074, lng: -0.1263, reliability: 86},
+            {id: 39, name: "The Herald Scotland", region: "EU", lat: 55.8609, lng: -4.2514, reliability: 87},
+            
+            // GERMANY/AUSTRIA/SWISS (40-60)
+            {id: 40, name: "Der Spiegel", region: "EU", lat: 53.5511, lng: 9.9937, reliability: 94},
+            {id: 41, name: "FAZ Frankfurt", region: "EU", lat: 50.1109, lng: 8.6821, reliability: 93},
+            {id: 42, name: "Süddeutsche", region: "EU", lat: 48.1351, lng: 11.5820, reliability: 94},
+            {id: 43, name: "Bild", region: "EU", lat: 52.5200, lng: 13.4050, reliability: 72},
+            {id: 44, name: "Die Zeit", region: "EU", lat: 53.5511, lng: 9.9937, reliability: 95},
+            {id: 45, name: "ARD Tagesschau", region: "EU", lat: 52.5200, lng: 13.4050, reliability: 93},
+            {id: 46, name: "ZDF Heute", region: "EU", lat: 52.5200, lng: 13.4051, reliability: 92},
+            {id: 47, name: "Deutsche Welle", region: "EU", lat: 50.7374, lng: 7.0982, reliability: 96},
+            {id: 48, name: "RTL News", region: "EU", lat: 50.1109, lng: 8.6821, reliability: 85},
+            {id: 49, name: "n-tv", region: "EU", lat: 52.5200, lng: 13.4052, reliability: 86},
+            {id: 50, name: "Welt", region: "EU", lat: 52.5200, lng: 13.4053, reliability: 87},
+            {id: 51, name: "Focus", region: "EU", lat: 52.5200, lng: 13.4054, reliability: 85},
+            {id: 52, name: "Stern", region: "EU", lat: 53.5511, lng: 9.9937, reliability: 83},
+            {id: 53, name: "taz", region: "EU", lat: 52.5200, lng: 13.4055, reliability: 84},
+            {id: 54, name: "Handelsblatt", region: "EU", lat: 50.1109, lng: 8.6822, reliability: 94},
+            {id: 55, name: "Die Presse Wien", region: "EU", lat: 48.2082, lng: 16.3738, reliability: 91},
+            {id: 56, name: "Standard Wien", region: "EU", lat: 48.2082, lng: 16.3739, reliability: 90},
+            {id: 57, name: "ORF", region: "EU", lat: 48.2082, lng: 16.3740, reliability: 92},
+            {id: 58, name: "SRF Zürich", region: "EU", lat: 47.3769, lng: 8.5417, reliability: 93},
+            {id: 59, name: "NZZ", region: "EU", lat: 47.3769, lng: 8.5418, reliability: 94},
+            
+            // FRANCE/BENELUX (60-80)
+            {id: 60, name: "Le Monde", region: "EU", lat: 48.8566, lng: 2.3522, reliability: 96},
+            {id: 61, name: "Le Figaro", region: "EU", lat: 48.8566, lng: 2.3523, reliability: 88},
+            {id: 62, name: "Libération", region: "EU", lat: 48.8566, lng: 2.3524, reliability: 87},
+            {id: 63, name: "France 24", region: "EU", lat: 48.8566, lng: 2.3525, reliability: 94},
+            {id: 64, name: "BFM TV", region: "EU", lat: 48.8566, lng: 2.3526, reliability: 85},
+            {id: 65, name: "France Info", region: "EU", lat: 48.8566, lng: 2.3527, reliability: 93},
+            {id: 66, name: "Les Echos", region: "EU", lat: 48.8566, lng: 2.3528, reliability: 92},
+            {id: 67, name: "L'Express", region: "EU", lat: 48.8566, lng: 2.3529, reliability: 86},
+            {id: 68, name: "Le Point", region: "EU", lat: 48.8566, lng: 2.3530, reliability: 87},
+            {id: 69, name: "RTBF Bruxelles", region: "EU", lat: 50.8503, lng: 4.3517, reliability: 91},
+            {id: 70, name: "VRT NWS", region: "EU", lat: 50.8503, lng: 4.3518, reliability: 90},
+            {id: 71, name: "De Morgen", region: "EU", lat: 51.2194, lng: 4.4025, reliability: 88},
+            {id: 72, name: "De Standaard", region: "EU", lat: 51.2194, lng: 4.4026, reliability: 89},
+            {id: 73, name: "Volkskrant", region: "EU", lat: 52.3676, lng: 4.9041, reliability: 90},
+            {id: 74, name: "NRC Handelsblad", region: "EU", lat: 52.3676, lng: 4.9042, reliability: 93},
+            {id: 75, name: "AD", region: "EU", lat: 52.3676, lng: 4.9043, reliability: 85},
+            {id: 76, name: "Telegraaf", region: "EU", lat: 52.3676, lng: 4.9044, reliability: 83},
+            {id: 77, name: "France Inter", region: "EU", lat: 48.8566, lng: 2.3531, reliability: 91},
+            {id: 78, name: "Ouest-France", region: "EU", lat: 48.3904, lng: -4.4861, reliability: 88},
+            {id: 79, name: "La Provence", region: "EU", lat: 43.2965, lng: 5.3698, reliability: 87},
+            
+            // USA/CANADA (80-110)
+            {id: 80, name: "CNN Atlanta", region: "US", lat: 33.7490, lng: -84.3880, reliability: 88},
+            {id: 81, name: "Fox News NYC", region: "US", lat: 40.7614, lng: -73.9776, reliability: 82},
+            {id: 82, name: "MSNBC", region: "US", lat: 40.7614, lng: -73.9777, reliability: 85},
+            {id: 83, name: "ABC News", region: "US", lat: 40.7589, lng: -73.9851, reliability: 89},
+            {id: 84, name: "CBS News", region: "US", lat: 40.7589, lng: -73.9852, reliability: 88},
+            {id: 85, name: "NBC News", region: "US", lat: 40.7589, lng: -73.9853, reliability: 89},
+            {id: 86, name: "PBS", region: "US", lat: 38.9072, lng: -77.0369, reliability: 92},
+            {id: 87, name: "NPR DC", region: "US", lat: 38.9072, lng: -77.0370, reliability: 94},
+            {id: 88, name: "NY Times", region: "US", lat: 40.7589, lng: -73.9854, reliability: 96},
+            {id: 89, name: "Washington Post", region: "US", lat: 38.9072, lng: -77.0371, reliability: 95},
+            {id: 90, name: "Wall Street Journal", region: "US", lat: 40.7589, lng: -73.9855, reliability: 94},
+            {id: 91, name: "USA Today", region: "US", lat: 38.9072, lng: -77.0372, reliability: 86},
+            {id: 92, name: "LA Times", region: "US", lat: 34.0522, lng: -118.2437, reliability: 91},
+            {id: 93, name: "Chicago Tribune", region: "US", lat: 41.8781, lng: -87.6298, reliability: 90},
+            {id: 94, name: "Houston Chronicle", region: "US", lat: 29.7604, lng: -95.3698, reliability: 88},
+            {id: 95, name: "Miami Herald", region: "US", lat: 25.7617, lng: -80.1918, reliability: 89},
+            {id: 96, name: "SF Chronicle", region: "US", lat: 37.7749, lng: -122.4194, reliability: 90},
+            {id: 97, name: "Boston Globe", region: "US", lat: 42.3601, lng: -71.0589, reliability: 91},
+            {id: 98, name: "CBC Toronto", region: "US", lat: 43.6532, lng: -79.3832, reliability: 93},
+            {id: 99, name: "CTV News", region: "US", lat: 43.6532, lng: -79.3833, reliability: 90},
+            {id: 100, name: "Global News", region: "US", lat: 43.6532, lng: -79.3834, reliability: 88},
+            {id: 101, name: "Toronto Star", region: "US", lat: 43.6532, lng: -79.3835, reliability: 89},
+            {id: 102, name: "Globe and Mail", region: "US", lat: 43.6532, lng: -79.3836, reliability: 92},
+            {id: 103, name: "La Presse Mtl", region: "US", lat: 45.5017, lng: -73.5673, reliability: 90},
+            {id: 104, name: "Le Devoir", region: "US", lat: 45.5017, lng: -73.5674, reliability: 91},
+            {id: 105, name: "Vancouver Sun", region: "US", lat: 49.2827, lng: -123.1207, reliability: 89},
+            {id: 106, name: "Calgary Herald", region: "US", lat: 51.0447, lng: -114.0719, reliability: 88},
+            {id: 107, name: "Ottawa Citizen", region: "US", lat: 45.4215, lng: -75.6972, reliability: 89},
+            {id: 108, name: "Politico", region: "US", lat: 38.9072, lng: -77.0373, reliability: 91},
+            {id: 109, name: "The Hill", region: "US", lat: 38.9072, lng: -77.0374, reliability: 88},
+            {id: 110, name: "Axios", region: "US", lat: 38.9072, lng: -77.0375, reliability: 87},
+            
+            // ASIA-PACIFIC (110-140)
+            {id: 111, name: "Nikkei Tokyo", region: "Asia", lat: 35.6762, lng: 139.6503, reliability: 95},
+            {id: 112, name: "Asahi Shimbun", region: "Asia", lat: 35.6762, lng: 139.6504, reliability: 93},
+            {id: 113, name: "Yomiuri", region: "Asia", lat: 35.6762, lng: 139.6505, reliability: 91},
+            {id: 114, name: "Mainichi", region: "Asia", lat: 35.6762, lng: 139.6506, reliability: 92},
+            {id: 115, name: "SCMP Hong Kong", region: "Asia", lat: 22.3193, lng: 114.1694, reliability: 93},
+            {id: 116, name: "People's Daily", region: "Asia", lat: 39.9042, lng: 116.4074, reliability: 78},
+            {id: 117, name: "Xinhua Beijing", region: "Asia", lat: 39.9042, lng: 116.4075, reliability: 76},
+            {id: 118, name: "CCTV", region: "Asia", lat: 39.9042, lng: 116.4076, reliability: 75},
+            {id: 119, name: "Global Times", region: "Asia", lat: 39.9042, lng: 116.4077, reliability: 72},
+            {id: 120, name: "Caixin", region: "Asia", lat: 39.9042, lng: 116.4078, reliability: 89},
+            {id: 121, name: "China Daily", region: "Asia", lat: 39.9042, lng: 116.4079, reliability: 74},
+            {id: 122, name: "The Hindu", region: "Asia", lat: 13.0827, lng: 80.2707, reliability: 91},
+            {id: 123, name: "Times of India", region: "Asia", lat: 28.6139, lng: 77.2090, reliability: 84},
+            {id: 124, name: "Indian Express", region: "Asia", lat: 28.6139, lng: 77.2091, reliability: 90},
+            {id: 125, name: "Hindustan Times", region: "Asia", lat: 28.6139, lng: 77.2092, reliability: 85},
+            {id: 126, name: "NHK World", region: "Asia", lat: 35.6762, lng: 139.6507, reliability: 96},
+            {id: 127, name: "Korea Times", region: "Asia", lat: 37.5665, lng: 126.9780, reliability: 87},
+            {id: 128, name: "KBS", region: "Asia", lat: 37.5665, lng: 126.9781, reliability: 89},
+            {id: 129, name: "Bangkok Post", region: "Asia", lat: 13.7563, lng: 100.5018, reliability: 88},
+            {id: 130, name: "Straits Times", region: "Asia", lat: 1.3521, lng: 103.8198, reliability: 92},
+            {id: 131, name: "Channel NewsAsia", region: "Asia", lat: 1.3521, lng: 103.8199, reliability: 91},
+            {id: 132, name: "Australian", region: "Asia", lat: -33.8688, lng: 151.2093, reliability: 88},
+            {id: 133, name: "Sydney Morning Herald", region: "Asia", lat: -33.8688, lng: 151.2094, reliability: 92},
+            {id: 134, name: "ABC Australia", region: "Asia", lat: -33.8688, lng: 151.2095, reliability: 94},
+            {id: 135, name: "Jakarta Post", region: "Asia", lat: -6.2088, lng: 106.8456, reliability: 87},
+            {id: 136, name: "Manila Bulletin", region: "Asia", lat: 14.5995, lng: 120.9842, reliability: 85},
+            {id: 137, name: "Taipei Times", region: "Asia", lat: 25.0330, lng: 121.5654, reliability: 89},
+            {id: 138, name: "The Diplomat", region: "Asia", lat: 38.9072, lng: -77.0376, reliability: 90},
+            {id: 139, name: "Asia Times", region: "Asia", lat: 22.3193, lng: 114.1695, reliability: 86},
+            {id: 140, name: "Kyodo News", region: "Asia", lat: 35.6762, lng: 139.6508, reliability: 94},
+            
+            // MIDDLE EAST (140-165)
+            {id: 141, name: "Al Jazeera Doha", region: "MENA", lat: 25.2854, lng: 51.5310, reliability: 92},
+            {id: 142, name: "Al Arabiya Dubai", region: "MENA", lat: 25.2048, lng: 55.2708, reliability: 88},
+            {id: 143, name: "Al Jazeera English", region: "MENA", lat: 25.2854, lng: 51.5311, reliability: 91},
+            {id: 144, name: "Middle East Eye", region: "MENA", lat: 51.5074, lng: -0.1278, reliability: 87},
+            {id: 145, name: "Jerusalem Post", region: "MENA", lat: 31.7683, lng: 35.2137, reliability: 89},
+            {id: 146, name: "Haaretz", region: "MENA", lat: 32.0853, lng: 34.7818, reliability: 90},
+            {id: 147, name: "Times of Israel", region: "MENA", lat: 31.7683, lng: 35.2138, reliability: 88},
+            {id: 148, name: "Daily Star Lebanon", region: "MENA", lat: 33.8938, lng: 35.5018, reliability: 86},
+            {id: 149, name: "Al-Ahram Cairo", region: "MENA", lat: 30.0444, lng: 31.2357, reliability: 82},
+            {id: 150, name: "Al-Masry Al-Youm", region: "MENA", lat: 30.0444, lng: 31.2358, reliability: 84},
+            {id: 151, name: "Saudia Gazette", region: "MENA", lat: 24.7136, lng: 46.6753, reliability: 81},
+            {id: 152, name: "Gulf News Dubai", region: "MENA", lat: 25.2048, lng: 55.2709, reliability: 85},
+            {id: 153, name: "Khaleej Times", region: "MENA", lat: 25.2048, lng: 55.2710, reliability: 84},
+            {id: 154, name: "Tehran Times", region: "MENA", lat: 35.6892, lng: 51.3890, reliability: 75},
+            {id: 155, name: "Press TV", region: "MENA", lat: 35.6892, lng: 51.3891, reliability: 72},
+            {id: 156, name: "TRT World", region: "MENA", lat: 41.0082, lng: 28.9784, reliability: 88},
+            {id: 157, name: "Hürriyet", region: "MENA", lat: 41.0082, lng: 28.9785, reliability: 85},
+            {id: 158, name: "Anadolu Agency", region: "MENA", lat: 39.9334, lng: 32.8597, reliability: 87},
+            {id: 159, name: "Asharq Al-Awsat", region: "MENA", lat: 24.7136, lng: 46.6754, reliability: 83},
+            {id: 160, name: "Morocco World News", region: "MENA", lat: 34.0209, lng: -6.8416, reliability: 86},
+            {id: 161, name: "Tunisia Live", region: "MENA", lat: 36.8065, lng: 10.1815, reliability: 85},
+            {id: 162, name: "Libya Herald", region: "MENA", lat: 32.8872, lng: 13.1913, reliability: 84},
+            {id: 163, name: "Iraq Oil Report", region: "MENA", lat: 33.3152, lng: 44.3661, reliability: 83},
+            {id: 164, name: "Rudaw", region: "MENA", lat: 36.1911, lng: 44.0092, reliability: 86},
+            {id: 165, name: "Al-Monitor", region: "MENA", lat: 38.9072, lng: -77.0377, reliability: 89},
+            
+            // AFRICA (165-190)
+            {id: 166, name: "News24 SA", region: "Africa", lat: -33.9249, lng: 18.4241, reliability: 90},
+            {id: 167, name: "Mail & Guardian", region: "Africa", lat: -26.2041, lng: 28.0473, reliability: 91},
+            {id: 168, name: "Sowetan", region: "Africa", lat: -26.2041, lng: 28.0474, reliability: 85},
+            {id: 169, name: "The Citizen SA", region: "Africa", lat: -25.7479, lng: 28.2293, reliability: 86},
+            {id: 170, name: "Premium Times Nigeria", region: "Africa", lat: 9.0820, lng: 8.6753, reliability: 87},
+            {id: 171, name: "Vanguard Nigeria", region: "Africa", lat: 6.5244, lng: 3.3792, reliability: 84},
+            {id: 172, name: "The Punch", region: "Africa", lat: 6.5244, lng: 3.3793, reliability: 83},
+            {id: 173, name: "Daily Monitor Uganda", region: "Africa", lat: 0.3476, lng: 32.5825, reliability: 86},
+            {id: 174, name: "The EastAfrican", region: "Africa", lat: -1.2921, lng: 36.8219, reliability: 88},
+            {id: 175, name: "Daily Nation Kenya", region: "Africa", lat: -1.2921, lng: 36.8220, reliability: 89},
+            {id: 176, name: "Standard Digital", region: "Africa", lat: -1.2921, lng: 36.8221, reliability: 87},
+            {id: 177, name: "The Citizen TZ", region: "Africa", lat: -6.7924, lng: 39.2083, reliability: 85},
+            {id: 178, name: "Ethiopian Reporter", region: "Africa", lat: 9.1450, lng: 40.4897, reliability: 84},
+            {id: 179, name: "Addis Standard", region: "Africa", lat: 9.1450, lng: 40.4898, reliability: 86},
+            {id: 180, name: "Daily News Egypt", region: "Africa", lat: 30.0444, lng: 31.2359, reliability: 85},
+            {id: 181, name: "Ghana Web", region: "Africa", lat: 5.6037, lng: -0.1870, reliability: 84},
+            {id: 182, name: "Côte d'Ivoire", region: "Africa", lat: 5.3600, lng: -4.0083, reliability: 83},
+            {id: 183, name: "Jeune Afrique", region: "Africa", lat: 48.8566, lng: 2.3532, reliability: 88},
+            {id: 184, name: "Africanews", region: "Africa", lat: 45.7640, lng: 4.8357, reliability: 89},
+            {id: 185, name: "Mmegi Botswana", region: "Africa", lat: -24.6282, lng: 25.9231, reliability: 85},
+            {id: 186, name: "Namibian", region: "Africa", lat: -22.5609, lng: 17.0658, reliability: 86},
+            {id: 187, name: "Zambia Reports", region: "Africa", lat: -15.3875, lng: 28.3228, reliability: 84},
+            {id: 188, name: "Zimbabwe Independent", region: "Africa", lat: -17.8252, lng: 31.0335, reliability: 85},
+            {id: 189, name: "Daily Maverick", region: "Africa", lat: -33.9249, lng: 18.4242, reliability: 90},
+            {id: 190, name: "Algeria 360", region: "Africa", lat: 36.7538, lng: 3.0588, reliability: 83},
+            
+            // LATIN AMERICA (190-210)
+            {id: 191, name: "Globo Brazil", region: "LatAm", lat: -22.9068, lng: -43.1729, reliability: 88},
+            {id: 192, name: "Folha de S.Paulo", region: "LatAm", lat: -23.5505, lng: -46.6333, reliability: 90},
+            {id: 193, name: "O Estado de S. Paulo", region: "LatAm", lat: -23.5505, lng: -46.6334, reliability: 89},
+            {id: 194, name: "Clarín Argentina", region: "LatAm", lat: -34.6037, lng: -58.3816, reliability: 88},
+            {id: 195, name: "La Nación", region: "LatAm", lat: -34.6037, lng: -58.3817, reliability: 87},
+            {id: 196, name: "El País Uruguay", region: "LatAm", lat: -34.9011, lng: -56.1645, reliability: 89},
+            {id: 197, name: "El Universal Mexico", region: "LatAm", lat: 19.4326, lng: -99.1332, reliability: 87},
+            {id: 198, name: "Reforma", region: "LatAm", lat: 19.4326, lng: -99.1333, reliability: 88},
+            {id: 199, name: "La Jornada", region: "LatAm", lat: 19.4326, lng: -99.1334, reliability: 86},
+            {id: 200, name: "El Tiempo Colombia", region: "LatAm", lat: 4.7110, lng: -74.0721, reliability: 88},
+            {id: 201, name: "El Espectador", region: "LatAm", lat: 4.7110, lng: -74.0722, reliability: 89},
+            {id: 202, name: "Semana", region: "LatAm", lat: 4.7110, lng: -74.0723, reliability: 87},
+            {id: 203, name: "El Comercio Peru", region: "LatAm", lat: -12.0464, lng: -77.0428, reliability: 88},
+            {id: 204, name: "La República", region: "LatAm", lat: -12.0464, lng: -77.0429, reliability: 86},
+            {id: 205, name: "MercoPress", region: "LatAm", lat: -34.9011, lng: -56.1646, reliability: 89},
+            {id: 206, name: "Telesur", region: "LatAm", lat: 10.4806, lng: -66.9036, reliability: 80},
+            {id: 207, name: "CNN Chile", region: "LatAm", lat: -33.4489, lng: -70.6693, reliability: 87},
+            {id: 208, name: "La Tercera", region: "LatAm", lat: -33.4489, lng: -70.6694, reliability: 88},
+            {id: 209, name: "El Mercurio", region: "LatAm", lat: -33.4489, lng: -70.6695, reliability: 87},
+            {id: 210, name: "Granma Cuba", region: "LatAm", lat: 23.1136, lng: -82.3666, reliability: 70},
+            
+            // EASTERN EUROPE/RUSSIA (210-235)
+            {id: 211, name: "TASS Moscow", region: "EU", lat: 55.7558, lng: 37.6173, reliability: 78},
+            {id: 212, name: "RIA Novosti", region: "EU", lat: 55.7558, lng: 37.6174, reliability: 76},
+            {id: 213, name: "RT", region: "EU", lat: 55.7558, lng: 37.6175, reliability: 65},
+            {id: 214, name: "Sputnik", region: "EU", lat: 55.7558, lng: 37.6176, reliability: 68},
+            {id: 215, name: "Kommersant", region: "EU", lat: 55.7558, lng: 37.6177, reliability: 82},
+            {id: 216, name: "Novaya Gazeta", region: "EU", lat: 55.7558, lng: 37.6178, reliability: 88},
+            {id: 217, name: "Meduza", region: "EU", lat: 56.9496, lng: 24.1052, reliability: 89},
+            {id: 218, name: "Moscow Times", region: "EU", lat: 55.7558, lng: 37.6179, reliability: 87},
+            {id: 219, name: "Polska Agencja Prasowa", region: "EU", lat: 52.2297, lng: 21.0122, reliability: 90},
+            {id: 220, name: "Gazeta Wyborcza", region: "EU", lat: 52.2297, lng: 21.0123, reliability: 89},
+            {id: 221, name: "Polityka", region: "EU", lat: 52.2297, lng: 21.0124, reliability: 88},
+            {id: 222, name: "Czech News Agency", region: "EU", lat: 50.0755, lng: 14.4378, reliability: 91},
+            {id: 223, name: "Hospodářské noviny", region: "EU", lat: 50.0755, lng: 14.4379, reliability: 90},
+            {id: 224, name: "MTI Hungary", region: "EU", lat: 47.4979, lng: 19.0402, reliability: 87},
+            {id: 225, name: "Balkan Insight", region: "EU", lat: 44.8176, lng: 20.4633, reliability: 90},
+            {id: 226, name: "BIRN", region: "EU", lat: 41.3275, lng: 19.8187, reliability: 91},
+            {id: 227, name: "Romania Insider", region: "EU", lat: 44.4268, lng: 26.1025, reliability: 88},
+            {id: 228, name: "Pravda Ukraine", region: "EU", lat: 50.4501, lng: 30.5234, reliability: 85},
+            {id: 229, name: "Ukrainska Pravda", region: "EU", lat: 50.4501, lng: 30.5235, reliability: 89},
+            {id: 230, name: "Kyiv Independent", region: "EU", lat: 50.4501, lng: 30.5236, reliability: 91},
+            {id: 231, name: "Interfax Ukraine", region: "EU", lat: 50.4501, lng: 30.5237, reliability: 86},
+            {id: 232, name: "Belsat", region: "EU", lat: 53.9045, lng: 27.5615, reliability: 88},
+            {id: 233, name: "TUT.by", region: "EU", lat: 53.9045, lng: 27.5616, reliability: 87},
+            {id: 234, name: "Delfi Lithuania", region: "EU", lat: 54.6872, lng: 25.2797, reliability: 88},
+            {id: 235, name: "ERR Estonia", region: "EU", lat: 59.4370, lng: 24.7536, reliability: 91},
+            
+            // SCANDINAVIA/BALTIC (235-250)
+            {id: 236, name: "Dagens Nyheter", region: "EU", lat: 59.3293, lng: 18.0686, reliability: 93},
+            {id: 237, name: "Svenska Dagbladet", region: "EU", lat: 59.3293, lng: 18.0687, reliability: 92},
+            {id: 238, name: "Aftonbladet", region: "EU", lat: 59.3293, lng: 18.0688, reliability: 85},
+            {id: 239, name: "NRK Norway", region: "EU", lat: 59.9139, lng: 10.7522, reliability: 95},
+            {id: 240, name: "VG", region: "EU", lat: 59.9139, lng: 10.7523, reliability: 88},
+            {id: 241, name: "Aftenposten", region: "EU", lat: 59.9139, lng: 10.7524, reliability: 92},
+            {id: 242, name: "DR Denmark", region: "EU", lat: 55.6761, lng: 12.5683, reliability: 94},
+            {id: 243, name: "Politiken", region: "EU", lat: 55.6761, lng: 12.5684, reliability: 92},
+            {id: 244, name: "Berlingske", region: "EU", lat: 55.6761, lng: 12.5685, reliability: 91},
+            {id: 245, name: "Yle Finland", region: "EU", lat: 60.1699, lng: 24.9384, reliability: 94},
+            {id: 246, name: "Helsingin Sanomat", region: "EU", lat: 60.1699, lng: 24.9385, reliability: 93},
+            {id: 247, name: "Iceland Review", region: "EU", lat: 64.1265, lng: -21.8174, reliability: 88},
+            {id: 248, name: "Irish Times", region: "EU", lat: 53.3498, lng: -6.2603, reliability: 93},
+            {id: 249, name: "RTÉ News", region: "EU", lat: 53.3498, lng: -6.2604, reliability: 92}
+        ];
 
-        function toggleDebug() {
-            DEBUG.enabled = !DEBUG.enabled;
-            document.getElementById('debugPanel').classList.toggle('active');
-            DEBUG.log('Debug mode ' + (DEBUG.enabled ? 'ENABLED' : 'DISABLED'));
-            if (DEBUG.enabled) addToTicker('Debug Mode aktiviert', 'alert');
-        }
+        // ================== SYSTEM ==================
+        let audio = document.getElementById('radioPlayer');
+        let currentStation = 'bbc';
+        let isPlaying = false;
+        let map;
+        let markers = [];
+        let isScanning = false;
+
+        const RADIO_STATIONS = {
+            bbc: { name: "BBC World Service", url: "https://stream.live.vc.bbcmedia.co.uk/bbc_world_service", desc: "24/7 Global News" },
+            dw: { name: "Deutsche Welle", url: "https://dw.audiostream.io/dw/1028/mp3/64/dwstream-en", desc: "Germany International" },
+            rfi: { name: "RFI English", url: "https://live02.rfi.fr/rfienanglais-64.mp3", desc: "Radio France Internationale" },
+            npr: { name: "NPR News", url: "https://npr-ice.streamguys1.com/live.mp3", desc: "National Public Radio" },
+            srf: { name: "SRF Info", url: "https://stream.srg-ssr.ch/m/drs3/mp3_128", desc: "Swiss Radio" },
+            franceinfo: { name: "France Info", url: "https://direct.franceinfo.fr/live/franceinfo-midfi.mp3", desc: "24/7 France News" }
+        };
 
         function showError(msg) {
             const el = document.getElementById('errorIndicator');
             document.getElementById('errorText').textContent = msg;
             el.classList.add('show');
             setTimeout(() => el.classList.remove('show'), 5000);
-            DEBUG.log('ERROR: ' + msg, 'error');
         }
 
-        // ================== RADIO SYSTEM ==================
-        const RADIO_STATIONS = {
-            bbc: { 
-                name: "BBC World Service", 
-                url: "https://stream.live.vc.bbcmedia.co.uk/bbc_world_service", 
-                desc: "24/7 Global News"
-            },
-            dw: { 
-                name: "Deutsche Welle", 
-                url: "https://dw.audiostream.io/dw/1028/mp3/64/dwstream-en", 
-                desc: "Germany International"
-            },
-            rfi: { 
-                name: "RFI English", 
-                url: "https://live02.rfi.fr/rfienanglais-64.mp3", 
-                desc: "Radio France Internationale"
-            },
-            npr: { 
-                name: "NPR News", 
-                url: "https://npr-ice.streamguys1.com/live.mp3", 
-                desc: "National Public Radio"
-            },
-            srf: { 
-                name: "SRF Info", 
-                url: "https://stream.srg-ssr.ch/m/drs3/mp3_128", 
-                desc: "Schweizer Radio"
-            },
-            franceinfo: { 
-                name: "France Info", 
-                url: "https://direct.franceinfo.fr/live/franceinfo-midfi.mp3", 
-                desc: "24/7 France News"
-            }
-        };
-
-        let audio = document.getElementById('radioPlayer');
-        let currentStation = 'bbc';
-        let isPlaying = false;
-
-        // Audio Event Listeners
-        audio.addEventListener('error', (e) => {
-            DEBUG.log('Audio stream error: ' + e.message, 'error');
-            showError('Radio Stream Fehler - Bitte Sender wechseln');
-            isPlaying = false;
-            updatePlayButton();
-        });
-
-        audio.addEventListener('waiting', () => {
-            DEBUG.log('Audio buffering...', 'warn');
-        });
-
-        audio.addEventListener('playing', () => {
-            DEBUG.log('Radio playing: ' + RADIO_STATIONS[currentStation].name, 'success');
-        });
-
         function toggleRadio() {
-            DEBUG.log('Toggle radio triggered');
-            
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                DEBUG.log('Radio paused');
+                updatePlayButton();
                 addToTicker('Radio pausiert');
             } else {
                 const station = RADIO_STATIONS[currentStation];
                 audio.src = station.url;
                 audio.volume = 0.7;
-                
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        isPlaying = true;
-                        DEBUG.log('Playback started successfully');
-                        addToTicker('Radio aktiv: ' + station.name, 'success');
-                    }).catch(err => {
-                        DEBUG.log('Autoplay blocked: ' + err.message, 'error');
-                        showError('Autoplay blockiert - Bitte erneut klicken');
-                        isPlaying = false;
-                    });
-                }
+                audio.play().then(() => {
+                    isPlaying = true;
+                    updatePlayButton();
+                    addToTicker('Radio aktiv: ' + station.name, 'success');
+                }).catch(() => {
+                    showError('Autoplay blockiert - Bitte erneut klicken');
+                });
             }
-            updatePlayButton();
         }
 
         function updatePlayButton() {
@@ -973,15 +874,12 @@
         }
 
         function changeStation(key) {
-            DEBUG.log('Changing station to: ' + key);
             currentStation = key;
             const station = RADIO_STATIONS[key];
             document.getElementById('stationName').innerHTML = `${station.name}<span>${station.desc}</span>`;
-            
             if (isPlaying) {
                 audio.src = station.url;
-                audio.play().catch(e => {
-                    DEBUG.log('Station change error: ' + e.message, 'error');
+                audio.play().catch(() => {
                     isPlaying = false;
                     updatePlayButton();
                 });
@@ -989,97 +887,45 @@
             addToTicker(`Sender: ${station.name}`);
         }
 
-        function setVolume(val) {
-            audio.volume = val / 100;
-            DEBUG.log('Volume set to: ' + val + '%');
-        }
-
-        // ================== MAP SYSTEM ==================
-        let map;
-        let markers = [];
-        let isScanning = false;
-
-        // 250 NEWS SOURCES GENERATOR
-        const REGIONS = [
-            { name: "EU", lat: [35, 70], lng: [-10, 40] },
-            { name: "US", lat: [25, 50], lng: [-125, -65] },
-            { name: "Asia", lat: [10, 55], lng: [60, 150] },
-            { name: "MENA", lat: [15, 45], lng: [-10, 60] },
-            { name: "Africa", lat: [-35, 35], lng: [-20, 50] },
-            { name: "LatAm", lat: [-55, 25], lng: [-90, -35] }
-        ];
-
-        const NEWS_SOURCES = Array.from({length: 250}, (_, i) => {
-            const region = REGIONS[i % 6];
-            return {
-                id: i,
-                name: `Source-${i+1}`,
-                region: region.name,
-                lat: region.lat[0] + Math.random() * (region.lat[1] - region.lat[0]),
-                lng: region.lng[0] + Math.random() * (region.lng[0] - region.lng[1]),
-                reliability: Math.floor(Math.random() * 40) + 60
-            };
-        });
+        function setVolume(val) { audio.volume = val / 100; }
 
         function initMap() {
-            DEBUG.log('Initializing Leaflet map...');
             try {
-                map = L.map('map', {
-                    zoomControl: false,
-                    attributionControl: false,
-                    minZoom: 2,
-                    worldCopyJump: true
-                }).setView([30, 10], 2);
-
+                map = L.map('map', { zoomControl: false, attributionControl: false, minZoom: 2, worldCopyJump: true }).setView([30, 10], 2);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '© WarMap Intel',
-                    subdomains: 'abcd',
-                    maxZoom: 19
+                    attribution: '© WarMap Intel', subdomains: 'abcd', maxZoom: 19
                 }).addTo(map);
-
                 L.control.zoom({ position: 'bottomright' }).addTo(map);
-                
-                window.addEventListener('resize', () => {
-                    setTimeout(() => map.invalidateSize(), 100);
-                });
-                
-                DEBUG.log('Map initialized successfully', 'success');
+                window.addEventListener('resize', () => setTimeout(() => map.invalidateSize(), 100));
             } catch (e) {
-                DEBUG.log('Map initialization failed: ' + e.message, 'error');
                 showError('Karte konnte nicht geladen werden');
             }
         }
 
-        // ================== TELEGRAM SYSTEM ==================
         function toggleTelegram() {
             const panel = document.getElementById('telegramPanel');
             const btn = document.getElementById('tgToggle');
             panel.classList.toggle('open');
             btn.classList.toggle('open');
-            DEBUG.log('Telegram panel toggled: ' + (panel.classList.contains('open') ? 'OPEN' : 'CLOSED'));
         }
 
         function sendTelegramMessage() {
             const input = document.getElementById('tgInput');
             const btn = document.getElementById('tgSendBtn');
             const msg = input.value.trim();
-            
             if (!msg) return;
-            
-            DEBUG.log('Sending TG message: ' + msg.substring(0, 50) + '...');
             
             addTgMessage(msg, 'Sie', true);
             input.value = '';
             btn.disabled = true;
             
             setTimeout(() => {
-                addTgMessage('Nachricht empfangen. Analysiere Daten...', '@In4real_bot', false);
+                addTgMessage('Nachricht empfangen. Analysiere...', '@In4real_bot', false);
                 btn.disabled = false;
-                
                 setTimeout(() => {
                     const intel = generateRandomIntel();
                     addMarker(intel);
-                    addTgMessage(`🔍 Neue Intel erkannt: ${intel.title} [${intel.confidence}% Vertrauen]`, '@In4real_bot', false);
+                    addTgMessage(`🔍 Intel: ${intel.title} [${intel.confidence}%]`, '@In4real_bot', false);
                     addToTicker(`Telegram Intel: ${intel.title}`, 'alert');
                 }, 1500);
             }, 800);
@@ -1089,87 +935,52 @@
             const container = document.getElementById('tgMessages');
             const div = document.createElement('div');
             div.className = `tg-message ${isUser ? 'user' : (sender === 'System' ? 'system' : 'bot')}`;
-            div.innerHTML = `
-                <div><strong>${sender}:</strong> ${text}</div>
-                <div class="tg-message-time">${new Date().toLocaleTimeString()}</div>
-            `;
+            div.innerHTML = `<div><strong>${sender}:</strong> ${text}</div><div class="tg-message-time">${new Date().toLocaleTimeString()}</div>`;
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
 
-        function simulateIncomingMessage() {
-            const messages = [
-                "Neue Aktivität in Konfliktzone #184 erkannt",
-                "Update: 3 neue Quellen in Region MENA verfügbar",
-                "Hochprioritäts-Alert: Bewegung bei 35.6762, 139.6503",
-                "System-Check: Alle 250 Quellen online",
-                "Wetter-Update: Störung im Asiatischen Sektor"
-            ];
-            const msg = messages[Math.floor(Math.random() * messages.length)];
-            addTgMessage(msg, '@In4real_bot', false);
-            addToTicker('TG: ' + msg);
-        }
-
-        // ================== SCANNER & INTELLIGENCE ==================
         async function startGlobalScan() {
-            if (isScanning) {
-                DEBUG.log('Scan already in progress', 'warn');
-                return;
-            }
-            
+            if (isScanning) return;
             isScanning = true;
-            DEBUG.log('Starting global scan...');
-            
             document.getElementById('scannerOverlay').classList.add('active');
             document.getElementById('scanBtn').style.opacity = '0.5';
             
             let processed = 0;
-            const total = 50; // Scan 50 sources for demo
+            const total = 50;
             let found = 0;
             
-            const batchSize = 5;
-            
-            for (let i = 0; i < total; i += batchSize) {
-                const batch = NEWS_SOURCES.slice(i, i + batchSize);
+            for (let i = 0; i < total; i++) {
+                const source = NEWS_SOURCES[Math.floor(Math.random() * NEWS_SOURCES.length)];
+                processed++;
+                document.getElementById('scanSource').textContent = `Scanning: ${source.name} [${source.region}]`;
+                document.getElementById('scanBar').style.width = `${(processed/total)*100}%`;
+                document.getElementById('statAnalyzed').textContent = processed;
                 
-                for (let source of batch) {
-                    processed++;
-                    document.getElementById('scanSource').textContent = `Scanning: ${source.name} [${source.region}]`;
-                    document.getElementById('scanBar').style.width = `${(processed/total)*100}%`;
-                    document.getElementById('statAnalyzed').textContent = processed;
-                    
-                    // Random discovery chance based on source reliability
-                    if (Math.random() * 100 < source.reliability / 2) {
-                        found++;
-                        const intel = {
-                            title: `Intel-${found}`,
-                            lat: source.lat + (Math.random() - 0.5) * 2,
-                            lng: source.lng + (Math.random() - 0.5) * 2,
-                            confidence: Math.floor(60 + Math.random() * 40),
-                            source: source.name,
-                            region: source.region,
-                            time: new Date().toLocaleTimeString()
-                        };
-                        addMarker(intel);
-                        document.getElementById('statFound').textContent = found;
-                        addToTicker(`${source.region}: Event-${found} detected [${intel.confidence}%]`, 'alert');
-                    }
-                    
-                    await new Promise(r => setTimeout(r, 50));
+                if (Math.random() * 100 < source.reliability / 2.5) {
+                    found++;
+                    const intel = {
+                        title: `Intel-${found}`,
+                        lat: source.lat + (Math.random() - 0.5) * 3,
+                        lng: source.lng + (Math.random() - 0.5) * 3,
+                        confidence: Math.floor(60 + Math.random() * 40),
+                        source: source.name,
+                        region: source.region,
+                        time: new Date().toLocaleTimeString()
+                    };
+                    addMarker(intel);
+                    document.getElementById('statFound').textContent = found;
+                    addToTicker(`${source.region}: Event-${found} [${intel.confidence}%]`, 'alert');
                 }
-                
-                await new Promise(r => setTimeout(r, 100));
+                await new Promise(r => setTimeout(r, 80));
             }
             
             setTimeout(() => {
                 document.getElementById('scannerOverlay').classList.remove('active');
                 isScanning = false;
                 document.getElementById('scanBtn').style.opacity = '1';
-                DEBUG.log(`Scan complete. Found ${found} events.`, 'success');
                 updateStats();
-                addToTicker(`Global Scan abgeschlossen: ${found} Events gefunden`, 'success');
-                
-                // Reset stats after delay
+                addToTicker(`Scan abgeschlossen: ${found} Events`, 'success');
                 setTimeout(() => {
                     document.getElementById('statFound').textContent = '0';
                     document.getElementById('statAnalyzed').textContent = '0';
@@ -1180,17 +991,12 @@
 
         function generateRandomIntel() {
             const regions = ["EU", "US", "Asia", "MENA", "Africa", "LatAm"];
-            const types = ["Konflikt", "Bewegung", "Aktivität", "Warnung", "Observation"];
             const region = regions[Math.floor(Math.random() * regions.length)];
-            const type = types[Math.floor(Math.random() * types.length)];
-            
             return {
-                title: `${region}-${type}-${Math.floor(Math.random() * 999)}`,
-                lat: (Math.random() * 160) - 80,
-                lng: (Math.random() * 360) - 180,
+                title: `${region}-Event-${Math.floor(Math.random() * 999)}`,
+                lat: (Math.random() * 160) - 80, lng: (Math.random() * 360) - 180,
                 confidence: Math.floor(50 + Math.random() * 50),
-                source: "Telegram Bot",
-                region: region,
+                source: "Telegram Bot", region: region,
                 time: new Date().toLocaleTimeString()
             };
         }
@@ -1198,24 +1004,10 @@
         function addMarker(data) {
             try {
                 const color = data.confidence > 80 ? '#10b981' : data.confidence > 60 ? '#f59e0b' : '#f43f5e';
-                const pulseColor = data.confidence > 80 ? 'rgba(16,185,129,0.4)' : data.confidence > 60 ? 'rgba(245,158,11,0.4)' : 'rgba(244,63,94,0.4)';
-                
                 const marker = L.marker([data.lat, data.lng], {
                     icon: L.divIcon({
-                        className: 'custom-div-icon',
-                        html: `
-                            <div style="
-                                width: 16px; 
-                                height: 16px; 
-                                background: ${color}; 
-                                border-radius: 50%; 
-                                border: 2px solid white; 
-                                box-shadow: 0 0 15px ${color}, 0 0 30px ${pulseColor};
-                                animation: pulse-marker 2s infinite;
-                            "></div>
-                        `,
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10]
+                        html: `<div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 15px ${color}; animation: pulse-marker 2s infinite;"></div>`,
+                        iconSize: [20, 20], iconAnchor: [10, 10]
                     })
                 }).addTo(map);
                 
@@ -1223,51 +1015,28 @@
                     <div class="popup-title">${data.title}</div>
                     <div class="popup-source">${data.source} • ${data.region} • ${data.time}</div>
                     <div class="popup-desc">Vertrauensindex: ${data.confidence}%</div>
-                    <div class="popup-meta">
-                        <span>Lat: ${data.lat.toFixed(4)}</span>
-                        <span>Lng: ${data.lng.toFixed(4)}</span>
-                    </div>
+                    <div class="popup-meta"><span>Lat: ${data.lat.toFixed(4)}</span><span>Lng: ${data.lng.toFixed(4)}</span></div>
                 `);
                 
                 markers.push(marker);
                 updateStats();
-                
-                // Animate marker appearance
-                if (typeof gsap !== 'undefined') {
-                    gsap.from(marker.getElement(), {
-                        scale: 0,
-                        duration: 0.5,
-                        ease: "back.out(1.7)"
-                    });
-                }
-                
-            } catch (e) {
-                DEBUG.log('Marker error: ' + e.message, 'error');
-            }
+                gsap.from(marker.getElement(), { scale: 0, duration: 0.5, ease: "back.out(1.7)" });
+            } catch (e) { console.error('Marker error:', e); }
         }
 
-        // ================== UTILITIES ==================
         function addToTicker(text, type = '') {
             const ticker = document.getElementById('tickerContent');
             const div = document.createElement('div');
             div.className = `ticker-item ${type}`;
             div.textContent = `► ${new Date().toLocaleTimeString()} | ${text}`;
             ticker.appendChild(div);
-            
-            // Limit items
-            if (ticker.children.length > 20) {
-                ticker.removeChild(ticker.firstChild);
-            }
+            if (ticker.children.length > 20) ticker.removeChild(ticker.firstChild);
         }
 
-        function updateStats() {
-            document.getElementById('markerStat').textContent = markers.length + ' Markers';
-        }
+        function updateStats() { document.getElementById('markerStat').textContent = markers.length + ' Markers'; }
 
         function clearAllMarkers() {
             if (!confirm(`Alle ${markers.length} Marker löschen?`)) return;
-            
-            DEBUG.log('Clearing all markers...');
             markers.forEach(m => map.removeLayer(m));
             markers = [];
             updateStats();
@@ -1280,119 +1049,46 @@
                 timestamp: new Date().toISOString(),
                 count: markers.length,
                 markers: markers.map((m, i) => ({
-                    id: i,
-                    lat: m.getLatLng().lat,
-                    lng: m.getLatLng().lng,
+                    id: i, lat: m.getLatLng().lat, lng: m.getLatLng().lng,
                     title: m.getPopup().getContent().match(/popup-title">(.*?)<\/div>/)[1]
                 }))
             };
-            
             const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `warmap_export_${Date.now()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            a.href = url; a.download = `warmap_export_${Date.now()}.json`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
-            DEBUG.log('Data exported: ' + data.count + ' markers');
             addToTicker(`Export: ${data.count} Marker gespeichert`, 'success');
         }
 
-        // ================== SELF TEST ==================
-        function runSelfTest() {
-            DEBUG.enabled = true;
-            DEBUG.log('=== RUNNING SELF TEST ===', 'warn');
-            
-            const tests = [
-                { name: 'Audio Context', fn: () => audio !== null },
-                { name: 'Map Instance', fn: () => map !== null && typeof map.setView === 'function' },
-                { name: 'Markers Array', fn: () => Array.isArray(markers) },
-                { name: 'Telegram UI', fn: () => document.getElementById('telegramPanel') !== null },
-                { name: 'Radio Stations', fn: () => Object.keys(RADIO_STATIONS).length === 6 },
-                { name: 'News Sources', fn: () => NEWS_SOURCES.length === 250 },
-                { name: 'GSAP Library', fn: () => typeof gsap !== 'undefined' },
-                { name: 'Leaflet Loaded', fn: () => typeof L !== 'undefined' }
-            ];
-            
-            let passed = 0;
-            tests.forEach(test => {
-                try {
-                    const result = test.fn();
-                    DEBUG.log(`${test.name}: ${result ? '✓ PASS' : '✗ FAIL'}`, result ? 'success' : 'error');
-                    if (result) passed++;
-                } catch (e) {
-                    DEBUG.log(`${test.name}: ✗ ERROR - ${e.message}`, 'error');
-                }
-            });
-            
-            DEBUG.log(`=== TEST COMPLETE: ${passed}/${tests.length} PASSED ===`, passed === tests.length ? 'success' : 'warn');
-            
-            if (passed === tests.length) {
-                addToTicker('Self-Test: Alle Systeme operational', 'success');
-                addTgMessage('System-Check bestanden. Alle Module funktionsfähig.', 'System', false);
-            } else {
-                showError(`Self-Test: ${tests.length - passed} Fehler gefunden`);
-                addTgMessage(`Warnung: ${tests.length - passed} Systemfehler erkannt.`, 'System', false);
-            }
-        }
-
-        // ================== INITIALIZATION ==================
         window.onload = function() {
-            DEBUG.log('WarMap Intelligence System v3.0 starting...');
-            
-            initMap();
-            setVolume(70);
-            
-            // Initial messages
+            initMap(); setVolume(70);
             setTimeout(() => {
-                addTgMessage('Verbindung hergestellt. System bereit.', 'System', false);
+                addTgMessage('Verbindung hergestellt. 250 Quellen bereit.', 'System', false);
                 addToTicker('System bereit • 250 Quellen geladen', 'success');
-                DEBUG.log('System ready', 'success');
             }, 1000);
-            
-            // Random incoming messages
             setInterval(() => {
-                if (Math.random() > 0.7) simulateIncomingMessage();
+                if (Math.random() > 0.7) {
+                    const msgs = ["Neue Quelle aktiv", "Update verfügbar", "System-Check OK", "Intel empfangen"];
+                    const msg = msgs[Math.floor(Math.random() * msgs.length)];
+                    addTgMessage(msg, '@In4real_bot', false);
+                }
             }, 45000);
         };
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 document.getElementById('telegramPanel').classList.remove('open');
                 document.getElementById('tgToggle').classList.remove('open');
-                if (isScanning) {
-                    isScanning = false;
-                    document.getElementById('scannerOverlay').classList.remove('active');
-                }
+                if (isScanning) { isScanning = false; document.getElementById('scannerOverlay').classList.remove('active'); }
             }
-            if (e.key === ' ' && e.target === document.body) {
-                e.preventDefault();
-                toggleRadio();
-            }
-            if (e.key === 'd' && e.ctrlKey) {
-                e.preventDefault();
-                toggleDebug();
-            }
+            if (e.key === ' ' && e.target === document.body) { e.preventDefault(); toggleRadio(); }
         });
 
-        // Audio context unlock
         document.addEventListener('click', () => {
-            if (audio && audio.paused && !isPlaying) {
-                audio.play().catch(() => {}).then(() => {
-                    audio.pause();
-                });
-            }
+            if (audio && audio.paused && !isPlaying) audio.play().catch(() => {}).then(() => audio.pause());
         }, { once: true });
-
-        // Global error handler
-        window.onerror = function(msg, url, line) {
-            DEBUG.log(`Global error: ${msg} at ${line}`, 'error');
-            return false;
-        };
     </script>
 </body>
 </html>
