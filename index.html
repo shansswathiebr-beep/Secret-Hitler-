@@ -282,7 +282,7 @@
       
       <div class="filters">
         <button class="filter-btn active" onclick="setFilter('all')">ALLE</button>
-        <button class="filter-btn capital" onclick="setFilter('capital')">HAUPTSTÄDTE</button>
+        <button class="filter-btn capital" onclick="setFilter('capital')">HAUPTSTÃ„DTE</button>
         <button class="filter-btn war" onclick="setFilter('war')">KRIEG</button>
         <button class="filter-btn impact" onclick="setFilter('impact')">IMPACT</button>
         <button class="filter-btn ally" onclick="setFilter('ally')">ALLIANZ</button>
@@ -313,7 +313,7 @@
       <div id="mediaFeed" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);"></div>
     </div>
     
-    <div class="timestamp" id="timestamp">03. MÄRZ 2026 • <span id="clock">00:00:00</span> CET</div>
+    <div class="timestamp" id="timestamp">03. MÃ„RZ 2026 â€¢ <span id="clock">00:00:00</span> CET</div>
   </main>
 </div>
 
@@ -321,47 +321,47 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
 // --- DATA ---
-// Hauptstädte und Konfliktparteien
+// HauptstÃ¤dte und Konfliktparteien
 const capitals = {
-  RU: { name: "Moskau", lat: 55.7558, lng: 37.6173, status: "war", type: "capital", color: "#ff3366", desc: "Russische Föderation - Hauptquartier militärischer Operationen" },
+  RU: { name: "Moskau", lat: 55.7558, lng: 37.6173, status: "war", type: "capital", color: "#ff3366", desc: "Russische FÃ¶deration - Hauptquartier militÃ¤rischer Operationen" },
   UA: { name: "Kiew", lat: 50.4501, lng: 30.5234, status: "war", type: "capital", color: "#ff3366", desc: "Ukraine - Hauptstadt unter konstantem Bedrohungsstatus" },
   BY: { name: "Minsk", lat: 53.9045, lng: 27.5615, status: "ally", type: "capital", color: "#00ff88", desc: "Belarus - Russland-alliiert" },
-  US: { name: "Washington D.C.", lat: 38.9072, lng: -77.0369, status: "war", type: "capital", color: "#ff3366", desc: "USA - Direkte militärische Engagements" },
+  US: { name: "Washington D.C.", lat: 38.9072, lng: -77.0369, status: "war", type: "capital", color: "#ff3366", desc: "USA - Direkte militÃ¤rische Engagements" },
   IR: { name: "Teheran", lat: 35.6892, lng: 51.3890, status: "war", type: "capital", color: "#ff3366", desc: "Iran - Konflikt mit USA und Israel" },
   IL: { name: "Jerusalem", lat: 31.7683, lng: 35.2137, status: "war", type: "capital", color: "#ff3366", desc: "Israel - Mehrfrontenkrieg" },
-  GB: { name: "London", lat: 51.5074, lng: -0.1278, status: "ally", type: "capital", color: "#00ff88", desc: "UK - NATO-Verbündeter" },
-  DE: { name: "Berlin", lat: 52.5200, lng: 13.4050, status: "ally", type: "capital", color: "#00ff88", desc: "Deutschland - NATO, militärische Unterstützung" },
-  FR: { name: "Paris", lat: 48.8566, lng: 2.3522, status: "ally", type: "capital", color: "#00ff88", desc: "Frankreich - NATO-Verbündeter" },
+  GB: { name: "London", lat: 51.5074, lng: -0.1278, status: "ally", type: "capital", color: "#00ff88", desc: "UK - NATO-VerbÃ¼ndeter" },
+  DE: { name: "Berlin", lat: 52.5200, lng: 13.4050, status: "ally", type: "capital", color: "#00ff88", desc: "Deutschland - NATO, militÃ¤rische UnterstÃ¼tzung" },
+  FR: { name: "Paris", lat: 48.8566, lng: 2.3522, status: "ally", type: "capital", color: "#00ff88", desc: "Frankreich - NATO-VerbÃ¼ndeter" },
   CN: { name: "Peking", lat: 39.9042, lng: 116.4074, status: "risk", type: "capital", color: "#ff8800", desc: "China - Taiwan-Spannungen" },
-  KP: { name: "Pjöngjang", lat: 39.0392, lng: 125.7625, status: "risk", type: "capital", color: "#ff8800", desc: "Nordkorea - Atomprogramm" },
-  KR: { name: "Seoul", lat: 37.5665, lng: 126.9780, status: "risk", type: "capital", color: "#ff8800", desc: "Südkorea - Bedrohung durch Norden" }
+  KP: { name: "PjÃ¶ngjang", lat: 39.0392, lng: 125.7625, status: "risk", type: "capital", color: "#ff8800", desc: "Nordkorea - Atomprogramm" },
+  KR: { name: "Seoul", lat: 37.5665, lng: 126.9780, status: "risk", type: "capital", color: "#ff8800", desc: "SÃ¼dkorea - Bedrohung durch Norden" }
 };
 
 // Impact-Zonen (Raketen, Bomben, ballistische Treffer)
 const impacts = [
-  { id: "bucha", name: "Butscha", lat: 50.5531, lng: 30.2137, type: "impact", color: "#ffcc00", desc: "Massaker-Stätte, Kriegsverbrechen", date: "2022-03", country: "UA" },
-  { id: "mariupol", name: "Mariupol", lat: 47.0971, lng: 37.5434, type: "impact", color: "#ffcc00", desc: "Zerstörung Azovstal, Belagerung", date: "2022-04", country: "UA" },
+  { id: "bucha", name: "Butscha", lat: 50.5531, lng: 30.2137, type: "impact", color: "#ffcc00", desc: "Massaker-StÃ¤tte, Kriegsverbrechen", date: "2022-03", country: "UA" },
+  { id: "mariupol", name: "Mariupol", lat: 47.0971, lng: 37.5434, type: "impact", color: "#ffcc00", desc: "ZerstÃ¶rung Azovstal, Belagerung", date: "2022-04", country: "UA" },
   { id: "dnipro", name: "Dnipro", lat: 48.4647, lng: 35.0462, type: "impact", color: "#ffcc00", desc: "Ballistischer Angriff auf Wohnhaus", date: "2023-01", country: "UA" },
   { id: "sderot", name: "Sderot", lat: 31.5250, lng: 34.5965, type: "impact", color: "#ffcc00", desc: "Schwerer Raketenbeschuss durch Hamas", date: "2023-10", country: "IL" },
   { id: "beeri", name: "Be'eri", lat: 31.4256, lng: 34.4983, type: "impact", color: "#ffcc00", desc: "Terrorangriff, Massaker", date: "2023-10", country: "IL" },
-  { id: "gaza_city", name: "Gaza-Stadt", lat: 31.5017, lng: 34.4668, type: "impact", color: "#ffcc00", desc: "Intensive Kampfhandlungen, Zerstörung", date: "2023-2024", country: "PS" },
-  { id: "jabalia", name: "Dschabalia", lat: 31.5291, lng: 34.4953, type: "impact", color: "#ffcc00", desc: "Luftangriffe auf Flüchtlingslager", date: "2023-11", country: "PS" },
-  { id: "khan_yunis", name: "Chan Yunis", lat: 31.3462, lng: 34.3038, type: "impact", color: "#ffcc00", desc: "Bodenoffensive, Zerstörung", date: "2024-01", country: "PS" },
+  { id: "gaza_city", name: "Gaza-Stadt", lat: 31.5017, lng: 34.4668, type: "impact", color: "#ffcc00", desc: "Intensive Kampfhandlungen, ZerstÃ¶rung", date: "2023-2024", country: "PS" },
+  { id: "jabalia", name: "Dschabalia", lat: 31.5291, lng: 34.4953, type: "impact", color: "#ffcc00", desc: "Luftangriffe auf FlÃ¼chtlingslager", date: "2023-11", country: "PS" },
+  { id: "khan_yunis", name: "Chan Yunis", lat: 31.3462, lng: 34.3038, type: "impact", color: "#ffcc00", desc: "Bodenoffensive, ZerstÃ¶rung", date: "2024-01", country: "PS" },
   { id: "rafah", name: "Rafah", lat: 31.2968, lng: 34.2456, type: "impact", color: "#ffcc00", desc: "Grenzstadt unter Beschuss", date: "2024-02", country: "PS" },
   { id: "odesa", name: "Odessa", lat: 46.4825, lng: 30.7233, type: "impact", color: "#ffcc00", desc: "Hafenstadt unter Raketenbeschuss", date: "2022-2024", country: "UA" },
-  { id: "charkiw", name: "Charkiw", lat: 49.9935, lng: 36.2304, type: "impact", color: "#ffcc00", desc: "Systematische Zerstörung Infrastruktur", date: "2022-2024", country: "UA" },
-  { id: "bakhmut", name: "Bachmut", lat: 48.5951, lng: 38.0029, type: "impact", color: "#ffcc00", desc: "Monatelange Schlacht, vollständige Zerstörung", date: "2023-05", country: "UA" },
+  { id: "charkiw", name: "Charkiw", lat: 49.9935, lng: 36.2304, type: "impact", color: "#ffcc00", desc: "Systematische ZerstÃ¶rung Infrastruktur", date: "2022-2024", country: "UA" },
+  { id: "bakhmut", name: "Bachmut", lat: 48.5951, lng: 38.0029, type: "impact", color: "#ffcc00", desc: "Monatelange Schlacht, vollstÃ¤ndige ZerstÃ¶rung", date: "2023-05", country: "UA" },
   { id: "avdiivka", name: "Awdiijiwka", lat: 48.1295, lng: 37.7469, type: "impact", color: "#ffcc00", desc: "Abwehrschlacht, schwere Verluste", date: "2024-02", country: "UA" },
-  { id: "abudhabi", name: "Abu Dhabi", lat: 24.4539, lng: 54.3773, type: "impact", color: "#ffcc00", desc: "Houthi-Angriffe auf Ölanlagen", date: "2022", country: "AE" },
+  { id: "abudhabi", name: "Abu Dhabi", lat: 24.4539, lng: 54.3773, type: "impact", color: "#ffcc00", desc: "Houthi-Angriffe auf Ã–lanlagen", date: "2022", country: "AE" },
   { id: "riyadh", name: "Riad", lat: 24.7136, lng: 46.6753, type: "impact", color: "#ffcc00", desc: "Raketenabwehr gegen Houthi-Angriffe", date: "2022", country: "SA" },
-  { id: "khartoum", name: "Khartum", lat: 15.5007, lng: 32.5599, type: "impact", color: "#ffcc00", desc: "Häuserkampf im Stadtzentrum", date: "2023-2024", country: "SD" },
+  { id: "khartoum", name: "Khartum", lat: 15.5007, lng: 32.5599, type: "impact", color: "#ffcc00", desc: "HÃ¤userkampf im Stadtzentrum", date: "2023-2024", country: "SD" },
   { id: "geneina", name: "El-Geneina", lat: 13.4526, lng: 22.4472, type: "impact", color: "#ffcc00", desc: "Massaker, ethnische Gewalt", date: "2023", country: "SD" },
-  { id: "taipei", name: "Taipeh", lat: 25.0330, lng: 121.5654, type: "impact", color: "#ffcc00", desc: "Konstante Bedrohung, Manöver", date: "laufend", country: "TW" }
+  { id: "taipei", name: "Taipeh", lat: 25.0330, lng: 121.5654, type: "impact", color: "#ffcc00", desc: "Konstante Bedrohung, ManÃ¶ver", date: "laufend", country: "TW" }
 ];
 
 // Verbindungen/Konfliktlinien
 const conflicts = [
-  { from: "RU", to: "UA", type: "war", intensity: "Extrem", label: "Vollständiger Krieg" },
+  { from: "RU", to: "UA", type: "war", intensity: "Extrem", label: "VollstÃ¤ndiger Krieg" },
   { from: "US", to: "IR", type: "war", intensity: "Hoch", label: "Direktkonflikt" },
   { from: "IL", to: "IR", type: "war", intensity: "Hoch", label: "Shadow War / Luftangriffe" },
   { from: "IL", to: "gaza_city", type: "war", intensity: "Extrem", label: "Gaza-Offensive" },
@@ -386,7 +386,7 @@ function init() {
   }).addTo(map);
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
-  L.control.attribution({ position: 'bottomleft', prefix: '© OSM | Live Intelligence' }).addTo(map);
+  L.control.attribution({ position: 'bottomleft', prefix: 'Â© OSM | Live Intelligence' }).addTo(map);
 
   // Add Capital Markers
   Object.keys(capitals).forEach(key => {
@@ -531,10 +531,10 @@ function showOverlay(key, data, type) {
 function generateHeadlines(location) {
   const times = ['vor 2 Min', 'vor 12 Min', 'vor 45 Min', 'vor 2 Std'];
   const templates = [
-    `Berichte über Explosionen in ${location}`,
-    `Militärsprecher bestätigt Aktivität nahe ${location}`,
-    `Satellitenbilder zeigen Rauch über ${location}`,
-    `Diplomatische Gespräche bezüglich ${location} abgebrochen`
+    `Berichte Ã¼ber Explosionen in ${location}`,
+    `MilitÃ¤rsprecher bestÃ¤tigt AktivitÃ¤t nahe ${location}`,
+    `Satellitenbilder zeigen Rauch Ã¼ber ${location}`,
+    `Diplomatische GesprÃ¤che bezÃ¼glich ${location} abgebrochen`
   ];
   return times.map((t, i) => ({ time: t, text: templates[i] || templates[0] }));
 }
