@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>SPECTER INTELLIGENCE | Precision Grid</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="SPECTER INTELLIGENCE - Precision Grid Mapping System">
+    <title>SPECTER INTELLIGENCE | Grid</title>
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Externe Ressourcen (CDN) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -38,7 +41,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-void);
             color: var(--signal-white);
             overflow: hidden;
@@ -77,11 +80,11 @@
             height: 100dvh;
         }
 
-        /* SPECTER Header */
         .status-header {
             grid-row: 1;
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -158,11 +161,11 @@
             text-shadow: 0 0 10px var(--matrix-green);
         }
 
-        /* Careermap Style Panels */
         .panel {
             position: fixed;
             background: var(--bg-panel);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: 12px;
             z-index: 900;
@@ -222,6 +225,7 @@
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--cyan-dim) transparent;
+            padding: 10px 0;
         }
 
         .panel-content::-webkit-scrollbar {
@@ -233,7 +237,6 @@
             border-radius: 2px;
         }
 
-        /* Intel Panel Links */
         .intel-panel {
             top: 60px;
             left: 10px;
@@ -274,7 +277,6 @@
             justify-content: space-between;
         }
 
-        /* Sources Panel Rechts */
         .sources-panel {
             top: 60px;
             right: 10px;
@@ -304,7 +306,6 @@
             box-shadow: 0 0 5px var(--alert-red);
         }
 
-        /* Map Zone */
         .map-zone {
             grid-row: 2;
             position: relative;
@@ -335,7 +336,6 @@
             opacity: 1;
         }
 
-        /* Hold Indicator & Labels */
         .hold-indicator {
             position: absolute;
             width: 50px;
@@ -389,6 +389,7 @@
             text-align: center;
             min-width: 200px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .sector-label-temp.visible {
@@ -433,26 +434,6 @@
             50% { border-color: var(--matrix-green); background: rgba(0, 255, 65, 0.12); }
         }
 
-        /* Connection Lines */
-        .connection-line {
-            stroke: var(--cyan);
-            stroke-width: 1.5;
-            stroke-opacity: 0;
-            transition: stroke-opacity 0.3s ease;
-            filter: drop-shadow(0 0 3px var(--cyan));
-            pointer-events: none;
-        }
-
-        .connection-line.active {
-            stroke-opacity: 0.6;
-            animation: dash 20s linear infinite;
-        }
-
-        @keyframes dash {
-            to { stroke-dashoffset: -1000; }
-        }
-
-        /* Ticker */
         .ticker {
             position: fixed;
             bottom: 70px;
@@ -498,7 +479,6 @@
             color: var(--matrix-green);
         }
 
-        /* FABs */
         .fab-container {
             position: fixed;
             bottom: 110px;
@@ -524,6 +504,7 @@
             transition: all 0.3s;
             font-size: 1.1rem;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .fab:hover {
@@ -553,11 +534,11 @@
             color: #000;
         }
 
-        /* Control Bar */
         .control-bar {
             grid-row: 3;
             background: linear-gradient(0deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.9) 100%);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -590,7 +571,6 @@
             background: rgba(0, 212, 255, 0.1);
         }
 
-        /* Scanner Overlay */
         .scanner-overlay {
             position: fixed;
             inset: 0;
@@ -632,7 +612,6 @@
             box-shadow: 0 0 20px var(--matrix-green);
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             top: 60px;
@@ -657,7 +636,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Marker Styles */
         .intel-marker {
             transition: all 0.3s ease;
         }
@@ -676,13 +654,13 @@
             50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
         }
 
-        /* Leaflet Popup Customization */
         .leaflet-popup-content-wrapper {
             background: rgba(0, 0, 0, 0.95);
             color: var(--signal-white);
             border: 1px solid var(--border);
             border-radius: 4px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.9);
             font-family: 'Inter', sans-serif;
         }
@@ -696,7 +674,19 @@
             background: var(--bg-deep) !important; 
         }
 
-        /* Responsive */
+        .watermark {
+            position: fixed;
+            bottom: 80px;
+            left: 15px;
+            color: rgba(0, 212, 255, 0.1);
+            font-size: 0.7rem;
+            z-index: 100;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
         @media (max-width: 768px) {
             .command-interface { grid-template-rows: 45px 1fr 65px; }
             
@@ -723,19 +713,6 @@
                 font-size: 0.7rem;
             }
         }
-
-        .watermark {
-            position: fixed;
-            bottom: 80px;
-            left: 15px;
-            color: rgba(0, 212, 255, 0.1);
-            font-size: 0.7rem;
-            z-index: 100;
-            pointer-events: none;
-            font-family: 'JetBrains Mono', monospace;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
     </style>
 </head>
 <body>
@@ -747,7 +724,7 @@
         <div class="scanner-ring">
             <div class="scanner-core"></div>
         </div>
-        <div style="margin-top: 30px; color: var(--cyan); font-family: 'JetBrains Mono'; font-size: 0.9rem;">
+        <div style="margin-top: 30px; color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center;">
             SCANNING SECTORS...
         </div>
         <div style="margin-top: 10px; color: var(--signal-dim); font-size: 0.8rem;" id="scanProgress">0%</div>
@@ -775,13 +752,12 @@
                 <button class="header-btn" onclick="startGridScan()" title="Sector Scan">
                     <i class="fas fa-radar"></i>
                 </button>
-                <div style="font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--signal-dim); margin-left: 10px;">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--signal-dim); margin-left: 10px;">
                     ZOOM: <span id="zoomLevel" style="color: var(--signal-white);">13</span>
                 </div>
             </div>
         </header>
 
-        <!-- Intel Panel Left -->
         <div class="panel intel-panel collapsed" id="intelPanel">
             <div class="panel-header" onclick="togglePanel('intel')">
                 <div class="panel-title">
@@ -800,7 +776,6 @@
             </div>
         </div>
 
-        <!-- Sources Panel Right -->
         <div class="panel sources-panel right collapsed" id="sourcesPanel">
             <div class="panel-header" onclick="togglePanel('sources')">
                 <div class="panel-title">
@@ -887,7 +862,6 @@
     </div>
 
     <script>
-        // ================== CONFIGURATION ==================
         const CONFIG = {
             SECTOR_SIZE: 0.0004,
             GRID_ZOOM: 19,
@@ -901,7 +875,6 @@
             }
         };
 
-        // ================== STATE ==================
         let state = {
             isGridActive: false,
             selectedSector: null,
@@ -913,15 +886,14 @@
             isHolding: false,
             lastTapTime: 0,
             touchCount: 0,
-            // Intel State
             markers: [],
             edges: [],
             intelLayer: L.layerGroup(),
             showConnections: false,
-            intelVisible: true
+            intelVisible: true,
+            intelCount: 0
         };
 
-        // ================== INITIALIZATION ==================
         const map = L.map('map', {
             zoomControl: false,
             attributionControl: false,
@@ -934,12 +906,12 @@
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 22,
-            opacity: 0.7
+            opacity: 0.7,
+            crossOrigin: true
         }).addTo(map);
 
         state.intelLayer.addTo(map);
 
-        // ================== GRID SYSTEM (Unchanged) ==================
         const canvas = document.getElementById('gridCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -952,7 +924,17 @@
             ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
             if (state.isGridActive) drawGrid();
         }
+        
         window.addEventListener('resize', () => setTimeout(resizeCanvas, 100));
+        
+        // iOS Safari viewport height fix
+        function setVH() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setVH);
+        setVH();
+        
         resizeCanvas();
 
         function generateWords(lat, lng) {
@@ -1004,16 +986,25 @@
             ctx.stroke();
         }
 
-        // ================== TOUCH & HOLD LOGIC (Unchanged) ==================
         const mapZone = document.getElementById('mapZone');
         const holdIndicator = document.getElementById('holdIndicator');
         const holdProgress = document.getElementById('holdProgress');
         const tempLabel = document.getElementById('sectorLabelTemp');
 
+        mapZone.addEventListener('touchstart', startLongPress, {passive: false});
+        mapZone.addEventListener('touchmove', moveLongPress, {passive: false});
+        mapZone.addEventListener('touchend', endLongPress, {passive: false});
+        
+        // Mouse support for desktop testing
+        mapZone.addEventListener('mousedown', startLongPress);
+        mapZone.addEventListener('mousemove', moveLongPress);
+        mapZone.addEventListener('mouseup', endLongPress);
+        mapZone.addEventListener('mouseleave', endLongPress);
+
         function startLongPress(e) {
             if (!state.isGridActive || map.getZoom() < CONFIG.GRID_ZOOM) return;
             
-            const touch = e.touches[0];
+            const touch = e.touches ? e.touches[0] : e;
             state.touchStartPos = { x: touch.clientX, y: touch.clientY };
             state.touchStartTime = Date.now();
             state.isLongPress = false;
@@ -1022,7 +1013,6 @@
             holdIndicator.style.left = touch.clientX + 'px';
             holdIndicator.style.top = touch.clientY + 'px';
             holdIndicator.classList.add('active');
-            holdIndicator.classList.remove('complete');
             
             holdProgress.style.transition = 'none';
             holdProgress.style.strokeDashoffset = '126';
@@ -1043,7 +1033,7 @@
 
         function moveLongPress(e) {
             if (!state.isHolding) return;
-            const touch = e.touches[0];
+            const touch = e.touches ? e.touches[0] : e;
             const dx = touch.clientX - state.touchStartPos.x;
             const dy = touch.clientY - state.touchStartPos.y;
             
@@ -1061,39 +1051,24 @@
             const wasLongPress = state.isLongPress;
             cancelLongPress();
             
-            if (wasLongPress) {
-                hideTempLabel();
-                e.preventDefault();
-            } else {
-                const currentTime = Date.now();
-                const timeDiff = currentTime - state.lastTapTime;
-                
-                if (timeDiff < 300 && state.touchCount === 1) {
-                    clearTimeout(state.longPressTimer);
-                    state.touchCount = 0;
-                    // Double tap auf Marker prüfen
-                    const touch = e.changedTouches[0];
-                    const latlng = map.containerPointToLatLng(L.point(touch.clientX, touch.clientY));
-                    checkMarkerClick(latlng);
-                } else {
-                    state.touchCount = 1;
-                    state.longPressTimer = setTimeout(() => { state.touchCount = 0; }, 300);
+            if (!wasLongPress) {
+                state.touchCount++;
+                // Touch without long press = normal map interaction
+                if (e.target === canvas) {
+                    e.preventDefault();
                 }
-                state.lastTapTime = currentTime;
             }
         }
 
         function completeLongPress(e) {
             state.isLongPress = true;
             state.isHolding = false;
-            holdIndicator.classList.add('complete');
             
-            const touch = e.touches[0];
+            const touch = e.touches ? e.touches[0] : e;
             const latlng = map.containerPointToLatLng(L.point(touch.clientX, touch.clientY));
             const sector = getSectorBounds(latlng.lat, latlng.lng);
             
             showTempLabel(sector, touch.clientX, touch.clientY);
-            triggerHaptic([50, 30]);
         }
 
         function cancelLongPress() {
@@ -1102,6 +1077,10 @@
             clearTimeout(state.longPressTimer);
             holdIndicator.classList.remove('active');
             holdProgress.style.transition = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('sectorSelector').classList.remove('active');
+            }, 200);
         }
 
         function showTempLabel(sector, x, y) {
@@ -1110,6 +1089,13 @@
             tempLabel.style.left = x + 'px';
             tempLabel.style.top = y + 'px';
             tempLabel.classList.add('visible');
+            
+            // Auto-hide after 3 seconds if not clicked
+            setTimeout(() => {
+                if (tempLabel.classList.contains('visible')) {
+                    hideTempLabel();
+                }
+            }, 3000);
         }
 
         function hideTempLabel() {
@@ -1128,7 +1114,6 @@
             selector.classList.add('active');
         }
 
-        // ================== INTELLIGENCE SYSTEM ==================
         function generateEvent(sector) {
             const types = ['CONFLICT', 'MOVEMENT', 'SIGNAL', 'SURVEILLANCE'];
             const type = types[Math.floor(Math.random() * types.length)];
@@ -1143,9 +1128,9 @@
                 type: type,
                 severity: severity,
                 source: ['SIGINT', 'HUMINT', 'OSINT', 'IMINT'][Math.floor(Math.random() * 4)],
-                time: new Date().toLocaleTimeString(),
+                time: new Date().toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'}),
                 headline: `${type} DETECTED`,
-                description: `Anomalous activity detected in sector ${words}. Confidence ${Math.floor(70 + Math.random() * 30)}%.`
+                description: `Anomalous activity in sector ${words}. Confidence ${Math.floor(70 + Math.random() * 30)}%.`
             };
         }
 
@@ -1163,307 +1148,163 @@
                 className: 'intel-marker pulse-marker'
             }).addTo(state.intelLayer);
             
-            marker.bindPopup(`
-                <div style="min-width: 220px; font-family: Inter, sans-serif;">
-                    <div style="color: ${color}; font-weight: 700; font-size: 0.9rem; margin-bottom: 5px; font-family: 'JetBrains Mono';">
-                        ${event.headline}
-                    </div>
-                    <div style="color: var(--signal-dim); font-size: 0.75rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
-                        ${event.sector} • ${event.source} • ${event.time}
-                    </div>
-                    <div style="color: #fff; font-size: 0.8rem; line-height: 1.4; margin-bottom: 8px;">
-                        ${event.description}
-                    </div>
-                    <div style="font-size: 0.7rem; color: ${color}; font-weight: 600; font-family: 'JetBrains Mono';">
-                        SEVERITY: ${event.severity}
-                    </div>
-                </div>
-            `, { autoClose: false, closeOnClick: false });
+            marker.bindPopup(`<div style="min-width: 220px; font-family: Inter, sans-serif;">
+                <div style="color: ${color}; font-weight: 700; font-size: 0.9rem; margin-bottom: 5px; font-family: 'JetBrains Mono', monospace;">${event.headline}</div>
+                <div style="color: var(--signal-dim); font-size: 0.75rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">${event.sector} • ${event.source} • ${event.time}</div>
+                <div style="color: #fff; font-size: 0.8rem; line-height: 1.4;">${event.description}</div>
+            </div>`);
             
-            marker.on('mouseover', () => {
-                showConnections(marker);
-                marker.openPopup();
-            });
-            
-            marker.on('mouseout', () => {
-                setTimeout(() => {
-                    if (!state.showConnections) hideConnections();
-                }, 2000);
-            });
-            
-            marker.on('click', (e) => {
-                L.DomEvent.stopPropagation(e);
-                addToIntelFeed(event);
-            });
-            
-            marker.eventData = event;
-            state.markers.push(marker);
-            addToIntelFeed(event);
-            createConnections(marker);
+            state.markers.push({ marker, event });
+            state.intelCount++;
         }
 
-        function createConnections(newMarker) {
-            // Verbinde mit nahegelegenen Markern (max 3)
-            const nearby = state.markers.filter(m => {
-                const dist = map.distance(m.getLatLng(), newMarker.getLatLng());
-                return dist < 500 && m !== newMarker; // 500m Radius
-            }).slice(0, 3);
-            
-            nearby.forEach(target => {
-                const line = L.polyline(
-                    [newMarker.getLatLng(), target.getLatLng()],
-                    {
-                        className: 'connection-line',
-                        color: '#00d4ff',
-                        weight: 1.5,
-                        opacity: 0,
-                        dashArray: '5, 10'
+        function togglePanel(id) {
+            const panel = document.getElementById(id + 'Panel');
+            panel.classList.toggle('collapsed');
+        }
+
+        function startGridScan() {
+            if (map.getZoom() >= CONFIG.GRID_ZOOM) {
+                state.isGridActive = !state.isGridActive;
+                document.getElementById('gridCanvas').classList.toggle('visible');
+                document.getElementById('gridStatus').classList.toggle('active');
+                if (state.isGridActive) {
+                    drawGrid();
+                    map.on('move', drawGrid);
+                    // Generate some random intel for demo
+                    for (let i = 0; i < Math.floor(Math.random() * 3) + 3; i++) {
+                        const randomLat = CONFIG.DEFAULT_CENTER[0] + (Math.random() - 0.5) * 0.05;
+                        const randomLng = CONFIG.DEFAULT_CENTER[1] + (Math.random() - 0.5) * 0.05;
+                        const sector = getSectorBounds(randomLat, randomLng);
+                        const event = generateEvent(sector);
+                        addIntelMarker(event);
                     }
-                ).addTo(state.intelLayer);
-                
-                line.sourceMarker = newMarker;
-                line.targetMarker = target;
-                state.edges.push(line);
-            });
-        }
-
-        function showConnections(activeMarker) {
-            state.edges.forEach(line => {
-                if (line.sourceMarker === activeMarker || line.targetMarker === activeMarker) {
-                    line.setStyle({ opacity: 0.6 });
-                    line.getElement()?.classList.add('active');
+                    updateIntelList();
+                    showToast('Grid active: ' + state.markers.length + ' sectors scanned');
+                } else {
+                    map.off('move', drawGrid);
+                    hideTempLabel();
+                    showToast('Grid deactivated');
                 }
-            });
-        }
-
-        function hideConnections() {
-            state.edges.forEach(line => {
-                line.setStyle({ opacity: 0 });
-                line.getElement()?.classList.remove('active');
-            });
-        }
-
-        function toggleConnections() {
-            state.showConnections = !state.showConnections;
-            if (state.showConnections) {
-                state.edges.forEach(line => line.setStyle({ opacity: 0.4 }));
-                showToast('CONNECTIONS VISIBLE');
             } else {
-                hideConnections();
-                showToast('CONNECTIONS HIDDEN');
+                showToast('Zoom to level 19+ to activate grid');
+                map.flyTo(map.getCenter(), CONFIG.GRID_ZOOM, {duration: 1});
             }
-        }
-
-        // ================== INTEL FEED ==================
-        function addToIntelFeed(event) {
-            const list = document.getElementById('intelList');
-            
-            if (list.querySelector('.fa-satellite')) {
-                list.innerHTML = '';
-            }
-            
-            const item = document.createElement('div');
-            item.className = 'intel-item';
-            const color = event.severity === 'CRITICAL' ? '#ff0040' : 
-                         event.severity === 'HIGH' ? '#f59e0b' : '#00d4ff';
-            
-            item.innerHTML = `
-                <div class="intel-headline" style="color: ${color};">${event.headline}</div>
-                <div class="intel-meta">
-                    <span>${event.sector}</span>
-                    <span>${event.time}</span>
-                </div>
-            `;
-            
-            item.onclick = () => {
-                map.setView([event.lat, event.lng], 20);
-                document.querySelectorAll('.intel-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-            };
-            
-            list.insertBefore(item, list.firstChild);
-            
-            if (list.children.length > 20) {
-                list.removeChild(list.lastChild);
-            }
-            
-            // Ticker Update
-            addToTicker(`${event.sector}: ${event.headline}`, event.severity === 'CRITICAL');
-        }
-
-        function addToTicker(text, isAlert) {
-            const ticker = document.getElementById('tickerContent');
-            const span = document.createElement('span');
-            span.className = `ticker-item ${isAlert ? 'alert' : ''}`;
-            span.innerHTML = `<i class="fas fa-angle-right"></i> ${new Date().toLocaleTimeString()} | ${text}`;
-            ticker.appendChild(span);
-        }
-
-        // ================== SCANNING ==================
-        async function startGridScan() {
-            if (!state.isGridActive) {
-                showToast('ZOOM TO LEVEL 19 FIRST');
-                return;
-            }
-            
-            const overlay = document.getElementById('scannerOverlay');
-            const progress = document.getElementById('scanProgress');
-            overlay.classList.add('active');
-            
-            const bounds = map.getBounds();
-            const sectors = [];
-            
-            // Generiere Sektoren im sichtbaren Bereich
-            for (let i = 0; i < 5; i++) {
-                const lat = bounds.getSouth() + Math.random() * (bounds.getNorth() - bounds.getSouth());
-                const lng = bounds.getWest() + Math.random() * (bounds.getEast() - bounds.getWest());
-                sectors.push(getSectorBounds(lat, lng));
-            }
-            
-            for (let i = 0; i < sectors.length; i++) {
-                progress.textContent = Math.floor(((i + 1) / sectors.length) * 100) + '%';
-                
-                if (Math.random() > 0.3) { // 70% Chance auf Event
-                    const event = generateEvent(sectors[i]);
-                    addIntelMarker(event);
-                }
-                
-                await new Promise(r => setTimeout(r, 400));
-            }
-            
-            overlay.classList.remove('active');
-            showToast(`SCAN COMPLETE: ${state.markers.length} EVENTS`);
-            
-            // Öffne Intel Panel
-            document.getElementById('intelPanel').classList.remove('collapsed');
-            document.getElementById('intelToggle').classList.add('active');
-        }
-
-        function checkMarkerClick(latlng) {
-            // Prüfe ob ein Marker in der Nähe geklickt wurde
-            const clickPoint = L.point(latlng.lat, latlng.lng);
-            state.markers.forEach(marker => {
-                const markerPoint = map.latLngToContainerPoint(marker.getLatLng());
-                const clickContainer = map.latLngToContainerPoint(latlng);
-                const dist = markerPoint.distanceTo(clickContainer);
-                
-                if (dist < 20) {
-                    marker.openPopup();
-                    addToIntelFeed(marker.eventData);
-                }
-            });
         }
 
         function toggleIntelLayer() {
             state.intelVisible = !state.intelVisible;
             if (state.intelVisible) {
-                map.addLayer(state.intelLayer);
-                showToast('INTEL LAYER ACTIVE');
+                state.markers.forEach(m => m.marker.addTo(state.intelLayer));
+                showToast('Intel layer visible');
             } else {
-                map.removeLayer(state.intelLayer);
-                showToast('INTEL LAYER HIDDEN');
+                state.intelLayer.clearLayers();
+                showToast('Intel layer hidden');
             }
         }
 
         function clearIntel() {
-            if (!state.markers.length) return;
-            if (!confirm(`Clear ${state.markers.length} intelligence markers?`)) return;
-            
             state.intelLayer.clearLayers();
             state.markers = [];
-            state.edges = [];
-            document.getElementById('intelList').innerHTML = `
-                <div style="padding: 20px; text-align: center; color: var(--signal-dim); font-size: 0.8rem;">
-                    <i class="fas fa-satellite" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.3;"></i>
-                    <p>No active intelligence.</p>
-                </div>
-            `;
-            showToast('INTEL CLEARED');
+            state.intelCount = 0;
+            updateIntelList();
+            showToast('Intel cleared');
+        }
+
+        function resetView() {
+            map.flyTo(CONFIG.DEFAULT_CENTER, CONFIG.DEFAULT_ZOOM, {duration: 1.5});
+            state.isGridActive = false;
+            document.getElementById('gridCanvas').classList.remove('visible');
+            document.getElementById('gridStatus').classList.remove('active');
+            hideTempLabel();
+        }
+
+        function toggleConnections() {
+            state.showConnections = !state.showConnections;
+            showToast(state.showConnections ? 'Links Visible' : 'Links Hidden');
+            // Implementation for drawing lines between markers would go here
         }
 
         function exportIntel() {
-            const data = state.markers.map(m => m.eventData);
-            const blob = new Blob([JSON.stringify({timestamp: Date.now(), events: data}, null, 2)], 
-                {type: 'application/json'});
+            const data = state.markers.map(m => ({
+                ...m.event,
+                coordinates: [m.event.lat, m.event.lng]
+            }));
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; 
-            a.download = `specter_intel_${Date.now()}.json`;
-            a.click();
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `specter_intel_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
             URL.revokeObjectURL(url);
-            showToast('EXPORT SUCCESSFUL');
-        }
-
-        // ================== UTILITIES ==================
-        function triggerHaptic(pattern) {
-            if (navigator.vibrate) navigator.vibrate(pattern);
+            showToast('Intel exported');
         }
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function togglePanel(type) {
-            const panel = document.getElementById(type + 'Panel');
-            const btn = document.getElementById(type + 'Toggle');
-            const isCollapsed = panel.classList.contains('collapsed');
-            
-            if (isCollapsed) {
-                panel.classList.remove('collapsed');
-                if (btn) btn.classList.add('active');
-            } else {
-                panel.classList.add('collapsed');
-                if (btn) btn.classList.remove('active');
-            }
-        }
-
-        function resetView() {
-            map.flyTo(CONFIG.DEFAULT_CENTER, CONFIG.DEFAULT_ZOOM, { duration: 1.5 });
-            hideConnections();
-        }
-
-        // ================== EVENTS ==================
-        map.on('zoomend', function() {
-            const zoom = map.getZoom();
-            document.getElementById('zoomLevel').textContent = zoom;
-            
-            const active = zoom >= CONFIG.GRID_ZOOM;
-            state.isGridActive = active;
-            document.getElementById('gridCanvas').classList.toggle('visible', active);
-            document.getElementById('gridStatus').classList.toggle('active', active);
-            
-            if (active) {
-                drawGrid();
-                showToast('GRID ACTIVE');
+        map.on('zoom', () => {
+            document.getElementById('zoomLevel').textContent = map.getZoom().toFixed(0);
+            if (state.isGridActive && map.getZoom() < CONFIG.GRID_ZOOM - 2) {
+                state.isGridActive = false;
+                document.getElementById('gridCanvas').classList.remove('visible');
+                document.getElementById('gridStatus').classList.remove('active');
+                showToast('Grid auto-deactivated (zoom level)');
             }
         });
 
-        map.on('move', drawGrid);
-
-        mapZone.addEventListener('touchstart', startLongPress, { passive: false });
-        mapZone.addEventListener('touchmove', moveLongPress, { passive: false });
-        mapZone.addEventListener('touchend', endLongPress, { passive: false });
-        mapZone.addEventListener('touchcancel', cancelLongPress);
-
-        // Keyboard Shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.panel').forEach(p => p.classList.add('collapsed'));
-                document.querySelectorAll('.header-btn').forEach(b => b.classList.remove('active'));
-                hideConnections();
-            }
-            if (e.key === 'i' || e.key === 'I') togglePanel('intel');
-            if (e.key === 's' || e.key === 'S') togglePanel('sources');
-            if (e.key === ' ') { e.preventDefault(); startGridScan(); }
+        // Prevent map click when clicking on label
+        tempLabel.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+            hideTempLabel();
+            const touch = e.touches[0];
+            const latlng = map.containerPointToLatLng(L.point(touch.clientX, touch.clientY));
+            const sector = getSectorBounds(latlng.lat, latlng.lng);
+            const event = generateEvent(sector);
+            addIntelMarker(event);
+            updateIntelList();
+            showToast('Intel captured: ' + event.sector);
+        }, {passive: false});
+        
+        tempLabel.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+            hideTempLabel();
+            const rect = tempLabel.getBoundingClientRect();
+            const latlng = map.containerPointToLatLng(L.point(rect.left + rect.width/2, rect.top + rect.height/2 + 50));
+            const sector = getSectorBounds(latlng.lat, latlng.lng);
+            const event = generateEvent(sector);
+            addIntelMarker(event);
+            updateIntelList();
+            showToast('Intel captured: ' + event.sector);
         });
 
-        // Init
-        setTimeout(() => {
-            showToast('SPECTER INTELLIGENCE ONLINE');
-        }, 1000);
+        function updateIntelList() {
+            const intelList = document.getElementById('intelList');
+            if (state.markers.length === 0) {
+                intelList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--signal-dim); font-size: 0.8rem;"><i class="fas fa-satellite" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.3;"></i><p>No active intelligence.<br>Scan sectors to populate.</p></div>';
+                return;
+            }
+            let html = `<div style="padding: 8px 12px; color: var(--matrix-green); font-size: 0.7rem; border-bottom: 1px solid var(--border); margin-bottom: 6px;">INTEL COUNT: ${state.intelCount}</div>`;
+            state.markers.slice(-8).reverse().forEach(m => {
+                const color = m.event.severity === 'CRITICAL' ? '#ff0040' : m.event.severity === 'HIGH' ? '#f59e0b' : '#00d4ff';
+                html += `<div class="intel-item" onclick="map.flyTo([${m.event.lat}, ${m.event.lng}], 18); togglePanel('intel')">
+                    <div class="intel-headline" style="color: ${color};">● ${m.event.type}</div>
+                    <div class="intel-meta">
+                        <span>${m.event.sector}</span>
+                        <span>${m.event.severity}</span>
+                    </div>
+                </div>`;
+            });
+            intelList.innerHTML = html;
+        }
+
+        // Initialize
+        console.log('%cSPECTER INTELLIGENCE GRID ACTIVE', 'color:#00ff41;font-family:JetBrains Mono;font-size:12px;font-weight:bold;');
+        console.log('%cGitHub Deployment Ready', 'color:#00d4ff;font-family:JetBrains Mono;font-size:10px;');
     </script>
 </body>
 </html>
