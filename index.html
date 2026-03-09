@@ -1,1310 +1,1278 @@
 <!DOCTYPE html>
-<html lang="de" dir="ltr">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="SPECTER INTELLIGENCE - Precision Grid Mapping System">
-    <title>SPECTER INTELLIGENCE | Grid</title>
-    
-    <!-- Externe Ressourcen (CDN) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <title>XHOL Mobile</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        /* 
+         * XHOL Mobile Optimized
+         * Wasserzeichen: ரா சுவாதி
+         * Zeitstempel: 2026-03-10
+         * Touch-First Architektur
+         */
         
         :root {
-            --bg-void: #000000;
-            --bg-deep: #020408;
-            --bg-panel: rgba(2, 4, 8, 0.92);
-            --cyan: #00d4ff;
-            --cyan-dim: rgba(0, 212, 255, 0.2);
-            --matrix-green: #00ff41;
-            --matrix-glow: rgba(0, 255, 65, 0.4);
-            --alert-red: #ff0040;
-            --signal-white: #e0f7ff;
-            --signal-dim: #5a6b7b;
-            --border: rgba(0, 212, 255, 0.15);
+            --bg-primary: #050505;
+            --bg-secondary: #111;
+            --bg-glass: rgba(20, 20, 20, 0.9);
+            --gold-primary: #d4af37;
+            --gold-light: #f4d03f;
+            --gold-dark: #b8941f;
+            --text-primary: #fff;
+            --text-secondary: #888;
+            --accent-red: #e74c3c;
+            --accent-green: #2ecc71;
+            --touch-min: 44px;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
             user-select: none;
-            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-void);
-            color: var(--signal-white);
+        html, body {
+            height: 100%;
+            width: 100%;
             overflow: hidden;
             position: fixed;
-            width: 100%;
-            height: 100%;
-            font-size: 14px;
-            touch-action: none;
-            overscroll-behavior: none;
+            background: var(--bg-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        .scanner-bg {
+        /* Wasserzeichen - Mobil optimiert */
+        .watermark {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 1.2rem;
+            color: rgba(212, 175, 55, 0.06);
+            font-weight: 700;
+            letter-spacing: 0.3rem;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.15;
-            background: linear-gradient(180deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
-            animation: scan 8s linear infinite;
+            z-index: 1000;
+            white-space: nowrap;
+            font-family: serif;
         }
 
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100vh); }
+        .timestamp {
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.6rem;
+            color: rgba(212, 175, 55, 0.25);
+            pointer-events: none;
+            z-index: 1000;
         }
 
-        .command-interface {
-            position: relative;
-            z-index: 10;
-            display: grid;
-            grid-template-rows: 50px 1fr 70px;
+        /* App Container - Vollbild */
+        #app {
             height: 100vh;
             height: 100dvh;
-        }
-
-        .status-header {
-            grid-row: 1;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            font-family: 'JetBrains Mono', monospace;
-            z-index: 1000;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--matrix-green);
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--matrix-green);
-            box-shadow: 0 0 10px var(--matrix-green);
-            animation: heartbeat 2s infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: var(--signal-dim);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .header-btn:hover, .header-btn.active {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: var(--cyan);
-            color: var(--cyan);
-        }
-
-        .grid-status {
-            font-size: 0.7rem;
-            color: var(--signal-dim);
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .grid-status.active {
-            opacity: 1;
-            color: var(--matrix-green);
-            text-shadow: 0 0 10px var(--matrix-green);
-        }
-
-        .panel {
-            position: fixed;
-            background: var(--bg-panel);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            z-index: 900;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-            max-height: 60vh;
-        }
-
-        .panel.collapsed {
-            transform: translateX(-120%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .panel.right.collapsed {
-            transform: translateX(120%);
-        }
-
-        .panel-header {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            background: rgba(0, 212, 255, 0.05);
-        }
-
-        .panel-title {
-            color: var(--cyan);
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .panel-toggle {
-            background: none;
-            border: none;
-            color: var(--signal-dim);
-            cursor: pointer;
-            transition: transform 0.3s;
-            font-size: 0.8rem;
-        }
-
-        .panel.collapsed .panel-toggle {
-            transform: rotate(-90deg);
-        }
-
-        .panel-content {
-            max-height: calc(60vh - 50px);
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--cyan-dim) transparent;
-            padding: 10px 0;
-        }
-
-        .panel-content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .panel-content::-webkit-scrollbar-thumb {
-            background: var(--cyan-dim);
-            border-radius: 2px;
-        }
-
-        .intel-panel {
-            top: 60px;
-            left: 10px;
-            width: 300px;
-        }
-
-        .intel-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.2s;
-            border-left: 2px solid transparent;
-        }
-
-        .intel-item:hover {
-            background: rgba(0, 212, 255, 0.05);
-            border-left-color: var(--cyan);
-        }
-
-        .intel-item.active {
-            background: rgba(0, 255, 65, 0.1);
-            border-left-color: var(--matrix-green);
-        }
-
-        .intel-headline {
-            font-size: 0.8rem;
-            color: var(--signal-white);
-            margin-bottom: 3px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .intel-meta {
-            font-size: 0.65rem;
-            color: var(--signal-dim);
-            font-family: 'JetBrains Mono', monospace;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .sources-panel {
-            top: 60px;
-            right: 10px;
-            width: 280px;
-        }
-
-        .source-item {
-            padding: 10px 15px;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.05);
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--signal-dim);
-        }
-
-        .source-status {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--matrix-green);
-            box-shadow: 0 0 5px var(--matrix-green);
-        }
-
-        .source-status.offline {
-            background: var(--alert-red);
-            box-shadow: 0 0 5px var(--alert-red);
-        }
-
-        .map-zone {
-            grid-row: 2;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #map {
-            width: 100%;
-            height: 100%;
-            background: var(--bg-deep);
-            z-index: 5;
-        }
-
-        #gridCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 15;
-            opacity: 0;
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: opacity;
-        }
-
-        #gridCanvas.visible {
-            opacity: 1;
-        }
-
-        .hold-indicator {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            pointer-events: none;
-            z-index: 25;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
-
-        .hold-indicator.active {
-            display: block;
-        }
-
-        .hold-indicator svg {
-            transform: rotate(-90deg);
-            width: 100%;
-            height: 100%;
-        }
-
-        .hold-indicator circle {
-            fill: none;
-            stroke-width: 3;
-        }
-
-        .hold-indicator .bg {
-            stroke: rgba(0, 212, 255, 0.2);
-        }
-
-        .hold-indicator .progress {
-            stroke: var(--matrix-green);
-            stroke-linecap: round;
-            stroke-dasharray: 126;
-            stroke-dashoffset: 126;
-            transition: stroke-dashoffset 0.1s linear;
-            filter: drop-shadow(0 0 5px var(--matrix-green));
-        }
-
-        .sector-label-temp {
-            position: absolute;
-            pointer-events: none;
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid var(--matrix-green);
-            padding: 12px 20px;
-            border-radius: 4px;
-            box-shadow: 0 0 30px var(--matrix-glow);
-            transform: translate(-50%, -150%) scale(0.9);
-            opacity: 0;
-            transition: all 0.2s ease-out;
-            text-align: center;
-            min-width: 200px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .sector-label-temp.visible {
-            opacity: 1;
-            transform: translate(-50%, -170%) scale(1);
-        }
-
-        .sector-label-temp .words {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.1rem;
-            color: var(--matrix-green);
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--matrix-green);
-        }
-
-        .sector-label-temp .hint {
-            font-size: 0.6rem;
-            color: var(--signal-dim);
-            margin-top: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase;
-        }
-
-        .sector-selector {
-            position: absolute;
-            border: 2px solid var(--cyan);
-            background: rgba(0, 212, 255, 0.1);
-            pointer-events: none;
-            z-index: 16;
-            display: none;
-            box-shadow: 0 0 20px var(--cyan-dim);
-        }
-
-        .sector-selector.active {
-            display: block;
-            animation: pulse-select 2s infinite;
-        }
-
-        @keyframes pulse-select {
-            0%, 100% { border-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
-            50% { border-color: var(--matrix-green); background: rgba(0, 255, 65, 0.12); }
-        }
-
-        .ticker {
-            position: fixed;
-            bottom: 70px;
-            left: 0;
-            right: 0;
-            height: 35px;
-            background: rgba(0, 0, 0, 0.95);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            overflow: hidden;
-            z-index: 800;
-            display: flex;
-            align-items: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-        }
-
-        .ticker-content {
-            display: flex;
-            white-space: nowrap;
-            animation: ticker 40s linear infinite;
-            padding-left: 100%;
-            color: var(--signal-dim);
-        }
-
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-200%); }
-        }
-
-        .ticker-item {
-            margin-right: 40px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ticker-item.alert {
-            color: var(--alert-red);
-        }
-
-        .ticker-item.success {
-            color: var(--matrix-green);
-        }
-
-        .fab-container {
-            position: fixed;
-            bottom: 110px;
-            right: 15px;
-            z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .fab {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: rgba(0, 0, 0, 0.9);
-            color: var(--cyan);
-            cursor: pointer;
+        /* Header - Kompakt */
+        .header {
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.15) 0%, transparent 100%);
+            padding: 0.8rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            flex-shrink: 0;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+        }
+
+        /* Hauptspielbereich - Scrollable */
+        .game-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding-bottom: calc(var(--touch-min) + 10px);
+        }
+
+        /* Deck Bereich - Horizontal */
+        .deck-area {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.8rem;
+            background: var(--bg-glass);
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stack-label {
+            font-size: 0.65rem;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            font-weight: 600;
+        }
+
+        .card-pile {
+            width: 70px;
+            height: 98px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 2px solid var(--gold-dark);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-            transition: all 0.3s;
-            font-size: 1.1rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .fab:hover {
-            transform: scale(1.1);
-            background: var(--cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--cyan-dim);
-        }
-
-        .fab.danger {
-            color: var(--alert-red);
-            border-color: rgba(244, 63, 94, 0.3);
-        }
-
-        .fab.danger:hover {
-            background: var(--alert-red);
-            color: white;
-        }
-
-        .fab.intel {
-            color: var(--matrix-green);
-            border-color: rgba(0, 255, 65, 0.3);
-        }
-
-        .fab.intel:hover {
-            background: var(--matrix-green);
-            color: #000;
-        }
-
-        .control-bar {
-            grid-row: 3;
-            background: linear-gradient(0deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.9) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding: 10px;
-            z-index: 1000;
-        }
-
-        .control-btn {
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--signal-dim);
-            padding: 8px 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 2px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            transition: transform 0.15s ease;
+            touch-action: manipulation;
         }
 
-        .control-btn:active {
+        .card-pile:active {
             transform: scale(0.95);
         }
 
-        .control-btn.active {
-            color: var(--cyan);
-            border-color: var(--cyan);
-            background: rgba(0, 212, 255, 0.1);
+        .card-pile.disabled {
+            opacity: 0.5;
+            pointer-events: none;
         }
 
-        .scanner-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.98);
-            z-index: 10000;
-            display: none;
+        .card-back {
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5px,
+                rgba(212, 175, 55, 0.15) 5px,
+                rgba(212, 175, 55, 0.15) 10px
+            );
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--gold-dark);
+        }
+
+        .card-count {
+            position: absolute;
+            bottom: -18px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: rgba(0,0,0,0.8);
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* Sets Grid - 2x2 auf Mobile, kompakt */
+        .sets-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .set-slot {
+            background: rgba(30, 30, 30, 0.6);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 0.6rem;
+            min-height: 110px;
+            display: flex;
             flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        .set-slot.active-drop {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-primary);
+            border-style: solid;
+            transform: scale(1.02);
+        }
+
+        .set-slot.valid {
+            border-color: var(--accent-green);
+            border-style: solid;
+            background: rgba(46, 204, 113, 0.1);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+        }
+
+        .set-slot.invalid {
+            border-color: var(--accent-red);
+            background: rgba(231, 76, 60, 0.1);
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .set-label {
+            font-size: 0.65rem;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            font-weight: 700;
+        }
+
+        .set-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            justify-content: center;
+            align-items: center;
+            min-height: 70px;
+            width: 100%;
+            position: relative;
+        }
+
+        .slot-hint {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: auto;
+            opacity: 0.7;
+        }
+
+        /* Karten - Touch optimiert */
+        .card {
+            width: 46px;
+            height: 64px;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: transform 0.15s, box-shadow 0.15s;
+            position: relative;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            touch-action: none;
+            -webkit-touch-callout: none;
+        }
+
+        .card.dragging {
+            opacity: 0.8;
+            transform: scale(1.1) rotate(5deg);
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: grabbing;
+            position: fixed;
+            pointer-events: none;
+        }
+
+        .card.selected {
+            transform: translateY(-8px);
+            box-shadow: 0 0 0 3px var(--gold-primary), 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .card.in-set {
+            transform: scale(0.9);
+        }
+
+        .card.red { color: #e74c3c; }
+        .card.black { color: #2c3e50; }
+        
+        .card.joker {
+            background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);
+            color: white;
+            border: none;
+        }
+
+        .card-value {
+            font-size: 1rem;
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .card-suit {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .card-corner {
+            position: absolute;
+            font-size: 0.55rem;
+            line-height: 1;
+            font-weight: 700;
+        }
+
+        .top-left {
+            top: 3px;
+            left: 3px;
+        }
+
+        .bottom-right {
+            bottom: 3px;
+            right: 3px;
+            transform: rotate(180deg);
+        }
+
+        /* Hand Bereich - Horizontal Scroll mit Snap */
+        .hand-container {
+            background: var(--bg-glass);
+            border-radius: 16px;
+            padding: 0.8rem 0.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .hand-label {
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-bottom: 0.5rem;
+            padding: 0 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .hand-count {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .hand-scroll {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 0.5rem;
+            scrollbar-width: none;
+            min-height: 90px;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+
+        .hand-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hand-scroll .card {
+            scroll-snap-align: center;
+            flex-shrink: 0;
+        }
+
+        .hand-hint {
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            opacity: 0.8;
+        }
+
+        /* Bottom Action Bar - Fixed */
+        .action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(0deg, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.8) 100%);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.8rem;
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            z-index: 50;
+            padding-bottom: calc(0.8rem + env(safe-area-inset-bottom));
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-primary) 100%);
+            color: #000;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            font-size: 0.85rem;
+            transition: all 0.15s;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            flex: 1;
+            max-width: 150px;
+            touch-action: manipulation;
+            min-height: var(--touch-min);
+            display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .scanner-overlay.active {
-            display: flex;
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
         }
 
-        .scanner-ring {
-            width: 150px;
-            height: 150px;
-            border: 2px solid var(--cyan-dim);
-            border-radius: 50%;
-            position: relative;
-            animation: rotate 4s linear infinite;
+        button.secondary {
+            background: transparent;
+            border: 2px solid var(--gold-primary);
+            color: var(--gold-primary);
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        button:disabled {
+            opacity: 0.4;
+            pointer-events: none;
         }
 
-        .scanner-core {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            background: var(--matrix-green);
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--matrix-green);
+        button.danger {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            color: white;
+            border: none;
         }
 
-        .toast {
+        /* Status Toast */
+        .status-toast {
             position: fixed;
-            top: 60px;
+            top: 80px;
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid var(--matrix-green);
-            color: var(--matrix-green);
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            z-index: 10001;
+            background: rgba(0,0,0,0.9);
+            color: var(--gold-primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--gold-dark);
+            z-index: 200;
             opacity: 0;
             transition: all 0.3s ease;
             pointer-events: none;
-            box-shadow: 0 0 20px var(--matrix-glow);
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .toast.show {
+        .status-toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
 
-        .intel-marker {
-            transition: all 0.3s ease;
-        }
-
-        .intel-marker:hover {
-            transform: scale(1.2);
-            z-index: 1000 !important;
-        }
-
-        .pulse-marker {
-            animation: marker-pulse 2s infinite;
-        }
-
-        @keyframes marker-pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
-            50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
-        }
-
-        .leaflet-popup-content-wrapper {
-            background: rgba(0, 0, 0, 0.95);
-            color: var(--signal-white);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .leaflet-popup-tip {
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid var(--border);
-        }
-
-        .leaflet-container { 
-            background: var(--bg-deep) !important; 
-        }
-
-        .watermark {
+        /* Modal - Mobile Optimized */
+        .modal-overlay {
             position: fixed;
-            bottom: 80px;
-            left: 15px;
-            color: rgba(0, 212, 255, 0.1);
-            font-size: 0.7rem;
-            z-index: 100;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            opacity: 0;
             pointer-events: none;
-            font-family: 'JetBrains Mono', monospace;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+            transition: opacity 0.3s;
         }
 
-        @media (max-width: 768px) {
-            .command-interface { grid-template-rows: 45px 1fr 65px; }
-            
-            .panel {
-                width: calc(100% - 20px);
-                left: 10px !important;
-                right: 10px !important;
-                top: auto !important;
-                bottom: 110px;
-                max-height: 40vh;
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: var(--bg-secondary);
+            border: 2px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal h2 {
+            color: var(--gold-primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .modal p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .modal button {
+            width: 100%;
+            max-width: none;
+        }
+
+        /* Hilfe Button */
+        .help-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 101;
+            backdrop-filter: blur(5px);
+            font-size: 1.1rem;
+        }
+
+        /* Tutorial Overlay */
+        .tutorial-step {
+            position: fixed;
+            background: rgba(212, 175, 55, 0.95);
+            color: #000;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 2000;
+            max-width: 250px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            display: none;
+        }
+
+        .tutorial-step::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(212, 175, 55, 0.95) transparent transparent transparent;
+        }
+
+        /* Animationen */
+        @keyframes dealCard {
+            0% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .dealing {
+            animation: dealCard 0.3s ease-out;
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+        }
+
+        .pulse {
+            animation: pulse-gold 1s infinite;
+        }
+
+        /* Landscape Optimierung */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .header {
+                padding: 0.4rem;
             }
-            
-            .panel.collapsed {
-                transform: translateY(120%);
+            .header h1 {
+                font-size: 1.2rem;
             }
-            
-            .fab-container {
-                bottom: 80px;
-                right: 10px;
+            .sets-area {
+                grid-template-columns: repeat(4, 1fr);
             }
-            
-            .ticker {
-                bottom: 65px;
-                font-size: 0.7rem;
+            .set-slot {
+                min-height: 80px;
+            }
+            .card {
+                width: 40px;
+                height: 56px;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) {
+            .card {
+                width: 60px;
+                height: 84px;
+            }
+            .card-pile {
+                width: 90px;
+                height: 126px;
+            }
+            .set-slot {
+                min-height: 140px;
+            }
+        }
+
+        /* iPhone SE / kleine Geräte */
+        @media (max-width: 375px) {
+            .card {
+                width: 42px;
+                height: 58px;
+            }
+            .sets-area {
+                gap: 0.4rem;
+            }
+            .set-slot {
+                min-height: 95px;
+                padding: 0.4rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="watermark">ரா சுவாதி</div>
+    <div class="timestamp">2026-03-10</div>
 
-    <div class="scanner-bg"></div>
-    <div class="toast" id="toast">SYSTEM READY</div>
+    <div id="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="help-btn" onclick="showRules()">?</div>
+            <h1>XHOL</h1>
+            <p>Drag & Drop Edition</p>
+        </div>
 
-    <div class="scanner-overlay" id="scannerOverlay">
-        <div class="scanner-ring">
-            <div class="scanner-core"></div>
+        <!-- Toast Status -->
+        <div class="status-toast" id="statusToast"></div>
+
+        <!-- Spielbereich -->
+        <div class="game-scroll">
+            <!-- Decks -->
+            <div class="deck-area">
+                <div class="stack">
+                    <div class="stack-label">Stapel</div>
+                    <div class="card-pile" id="drawPile" onclick="drawCard()">
+                        <div class="card-back">🂠</div>
+                        <div class="card-count" id="drawCount">88</div>
+                    </div>
+                </div>
+                <div class="stack">
+                    <div class="stack-label">Ablegen</div>
+                    <div class="card-pile" id="discardPile" onclick="drawFromDiscard()">
+                        <div class="card-back" style="background: transparent; border: 2px dashed #555; color: #555;">Leer</div>
+                        <div class="card-count" id="discardCount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sets -->
+            <div class="sets-area">
+                <div class="set-slot" id="set3-1" data-set="3-1" data-max="3">
+                    <div class="set-label">3er Set</div>
+                    <div class="set-content" id="content3-1"></div>
+                    <div class="slot-hint">3 Karten</div>
+                </div>
+                <div class="set-slot" id="set3-2" data-set="3-2" data-max="3">
+                    <div class="set-label">3er Set</div>
+                    <div class="set-content" id="content3-2"></div>
+                    <div class="slot-hint">3 Karten</div>
+                </div>
+                <div class="set-slot" id="set4-1" data-set="4-1" data-max="4">
+                    <div class="set-label">4er Set</div>
+                    <div class="set-content" id="content4-1"></div>
+                    <div class="slot-hint">4 Karten</div>
+                </div>
+                <div class="set-slot" id="set4-2" data-set="4-2" data-max="4">
+                    <div class="set-label">4er Set</div>
+                    <div class="set-content" id="content4-2"></div>
+                    <div class="slot-hint">4 Karten</div>
+                </div>
+            </div>
+
+            <!-- Hand -->
+            <div class="hand-container">
+                <div class="hand-label">
+                    <span>Deine Hand</span>
+                    <span class="hand-count" id="handCount">14</span>
+                </div>
+                <div class="hand-scroll" id="handCards">
+                    <!-- Karten werden hier generiert -->
+                </div>
+                <div class="hand-hint">↓ Wische horizontal · Halte zum Ziehen ↓</div>
+            </div>
         </div>
-        <div style="margin-top: 30px; color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center;">
-            SCANNING SECTORS...
+
+        <!-- Fixed Action Bar -->
+        <div class="action-bar">
+            <button onclick="resetGame()" class="secondary">Neu</button>
+            <button onclick="checkWin()" class="danger">XHOL!</button>
+            <button onclick="undoLast()" class="secondary">↩️</button>
         </div>
-        <div style="margin-top: 10px; color: var(--signal-dim); font-size: 0.8rem;" id="scanProgress">0%</div>
     </div>
 
-    <div class="command-interface">
-        
-        <header class="status-header">
-            <div class="brand">
-                <div class="pulse-dot"></div>
-                <span>SPECTER INTELLIGENCE</span>
-            </div>
+    <!-- Rules Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeRules()"></div>
+    <div class="modal" id="rulesModal">
+        <h2>📜 Regeln</h2>
+        <p style="text-align: left; font-size: 0.85rem;">
+            <strong>Ziel:</strong> Bilde 2 Dreier-Sets und 2 Vierer-Sets.<br><br>
             
-            <div class="grid-status" id="gridStatus">
-                PRECISION GRID // HOLD TO DECRYPT
-            </div>
+            <strong>Sets:</strong><br>
+            • <em>Gruppe:</em> Gleicher Wert, verschiedene Farben<br>
+            • <em>Run:</em> Gleiche Farbe, aufeinanderfolgende Werte<br><br>
             
-            <div class="header-controls">
-                <button class="header-btn" id="intelToggle" onclick="togglePanel('intel')" title="Intelligence Feed">
-                    <i class="fas fa-list-ul"></i>
-                </button>
-                <button class="header-btn" id="sourcesToggle" onclick="togglePanel('sources')" title="Sources">
-                    <i class="fas fa-satellite-dish"></i>
-                </button>
-                <button class="header-btn" onclick="startGridScan()" title="Sector Scan">
-                    <i class="fas fa-radar"></i>
-                </button>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--signal-dim); margin-left: 10px;">
-                    ZOOM: <span id="zoomLevel" style="color: var(--signal-white);">13</span>
-                </div>
-            </div>
-        </header>
-
-        <div class="panel intel-panel collapsed" id="intelPanel">
-            <div class="panel-header" onclick="togglePanel('intel')">
-                <div class="panel-title">
-                    <i class="fas fa-crosshairs"></i>
-                    Intel Feed
-                </div>
-                <button class="panel-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-            </div>
-            <div class="panel-content" id="intelList">
-                <div style="padding: 20px; text-align: center; color: var(--signal-dim); font-size: 0.8rem;">
-                    <i class="fas fa-satellite" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.3;"></i>
-                    <p>No active intelligence.<br>Scan sectors to populate.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel sources-panel right collapsed" id="sourcesPanel">
-            <div class="panel-header" onclick="togglePanel('sources')">
-                <div class="panel-title">
-                    <i class="fas fa-broadcast-tower"></i>
-                    Sources
-                </div>
-                <button class="panel-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-            </div>
-            <div class="panel-content" id="sourcesList">
-                <div class="source-item">
-                    <div class="source-status"></div>
-                    <div style="flex: 1;">
-                        <div style="color: var(--signal-white); font-weight: 600;">Reuters London</div>
-                        <div style="font-size: 0.65rem; color: var(--signal-dim);">98% Reliability</div>
-                    </div>
-                </div>
-                <div class="source-item">
-                    <div class="source-status"></div>
-                    <div style="flex: 1;">
-                        <div style="color: var(--signal-white); font-weight: 600;">AP New York</div>
-                        <div style="font-size: 0.65rem; color: var(--signal-dim);">98% Reliability</div>
-                    </div>
-                </div>
-                <div class="source-item">
-                    <div class="source-status offline"></div>
-                    <div style="flex: 1;">
-                        <div style="color: var(--signal-white); font-weight: 600;">Local Node</div>
-                        <div style="font-size: 0.65rem; color: var(--signal-dim);">Offline</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <main class="map-zone" id="mapZone">
-            <div id="map"></div>
-            <canvas id="gridCanvas"></canvas>
+            <strong>Joker:</strong> Ersetzen beliebige Karten, aber jedes Set braucht mindestens eine echte Karte.<br><br>
             
-            <div id="holdIndicator" class="hold-indicator">
-                <svg viewBox="0 0 44 44">
-                    <circle class="bg" cx="22" cy="22" r="20"></circle>
-                    <circle class="progress" id="holdProgress" cx="22" cy="22" r="20"></circle>
-                </svg>
-            </div>
-            
-            <div id="sectorSelector" class="sector-selector"></div>
-            
-            <div id="sectorLabelTemp" class="sector-label-temp">
-                <div class="words" id="labelWordsTemp">ALPHA.TIGER.NORTH</div>
-                <div class="hint">Release to conceal</div>
-            </div>
+            <strong>Steuerung:</strong><br>
+            • Halte Karte zum Ziehen (Drag & Drop)<br>
+            • Tippe Stapel zum Ziehen<br>
+            • Tippe Set zum Ablegen
+        </p>
+        <button onclick="closeRules()">Verstanden</button>
+    </div>
 
-            <div class="watermark">ரா சுவாதி | SPECTER GRID</div>
-        </main>
-
-        <div class="ticker" id="ticker">
-            <div class="ticker-content" id="tickerContent">
-                <span class="ticker-item">SPECTER INTELLIGENCE v4.0 // GRID ACTIVE</span>
-                <span class="ticker-item">HOLD SECTOR TO DECRYPT COORDINATES</span>
-                <span class="ticker-item">250 SOURCES STANDBY</span>
-            </div>
-        </div>
-
-        <div class="fab-container">
-            <button class="fab intel" onclick="toggleIntelLayer()" title="Toggle Intel Layer">
-                <i class="fas fa-eye"></i>
-            </button>
-            <button class="fab" onclick="startGridScan()" title="Scan Grid">
-                <i class="fas fa-search-location"></i>
-            </button>
-            <button class="fab danger" onclick="clearIntel()" title="Clear Intel">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </div>
-
-        <nav class="control-bar">
-            <button class="control-btn active" onclick="resetView()">Reset</button>
-            <button class="control-btn" onclick="map.zoomIn()">+ Grid</button>
-            <button class="control-btn" onclick="map.zoomOut()">- Grid</button>
-            <button class="control-btn" onclick="toggleConnections()">Links</button>
-            <button class="control-btn" onclick="exportIntel()">Export</button>
-        </nav>
+    <!-- Win Modal -->
+    <div class="modal-overlay" id="winOverlay"></div>
+    <div class="modal" id="winModal">
+        <h2>🎉 XHOL! 🎉</h2>
+        <p>Perfekt! Alle Sets gültig gebildet.<br>Du bist bereit für das echte Spiel!</p>
+        <button onclick="resetGame()">Neues Spiel</button>
     </div>
 
     <script>
-        const CONFIG = {
-            SECTOR_SIZE: 0.0004,
-            GRID_ZOOM: 19,
-            LONG_PRESS_DURATION: 600,
-            DEFAULT_CENTER: [6.0329, 80.2168],
-            DEFAULT_ZOOM: 13,
-            DICTS: {
-                alpha: ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA', 'ECHO', 'FOXTROT', 'GOLF', 'HOTEL', 'INDIA', 'JULIET', 'KILO', 'LIMA'],
-                beta: ['TIGER', 'WOLF', 'VIPER', 'EAGLE', 'SHARK', 'RAVEN', 'FALCON', 'LION', 'BEAR', 'HAWK', 'JAGUAR', 'COBRA'],
-                gamma: ['PRIME', 'CORE', 'BASE', 'POINT', 'ZONE', 'SECTOR', 'NODE', 'HUB', 'PORT', 'CENTER', 'NEXUS', 'ZERO']
-            }
-        };
+        /*
+         * XHOL Mobile Engine
+         * Touch-Optimierter Drag & Drop
+         * Wasserzeichen: ரா சுவாதி
+         */
 
-        let state = {
-            isGridActive: false,
-            selectedSector: null,
-            currentWords: '',
-            touchStartTime: 0,
-            touchStartPos: { x: 0, y: 0 },
-            longPressTimer: null,
-            isLongPress: false,
-            isHolding: false,
-            lastTapTime: 0,
-            touchCount: 0,
-            markers: [],
-            edges: [],
-            intelLayer: L.layerGroup(),
-            showConnections: false,
-            intelVisible: true,
-            intelCount: 0
-        };
+        const SUITS = ['♥', '♦', '♠', '♣'];
+        const VALUES = ['2','3','4','5','6','7','8','9','10','B','D','K','A'];
+        const VALUE_ORDER = {'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,'B':11,'D':12,'K':13,'A':14};
 
-        const map = L.map('map', {
-            zoomControl: false,
-            attributionControl: false,
-            center: CONFIG.DEFAULT_CENTER,
-            zoom: CONFIG.DEFAULT_ZOOM,
-            minZoom: 3,
-            maxZoom: 22,
-            doubleClickZoom: false
-        });
+        let deck = [], discardPile = [], hand = [];
+        let sets = {'3-1':[], '3-2':[], '4-1':[], '4-2':[]};
+        let draggedCard = null;
+        let draggedIndex = null;
+        let dragElement = null;
+        let touchOffset = {x:0, y:0};
+        let lastAction = null;
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 22,
-            opacity: 0.7,
-            crossOrigin: true
-        }).addTo(map);
-
-        state.intelLayer.addTo(map);
-
-        const canvas = document.getElementById('gridCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            const rect = document.getElementById('mapZone').getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-            if (state.isGridActive) drawGrid();
-        }
-        
-        window.addEventListener('resize', () => setTimeout(resizeCanvas, 100));
-        
-        // iOS Safari viewport height fix
-        function setVH() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        window.addEventListener('resize', setVH);
-        setVH();
-        
-        resizeCanvas();
-
-        function generateWords(lat, lng) {
-            const hash = Math.abs(Math.floor((lat * 10000) * (lng * 10000) * 997)) % 10000;
-            return `${CONFIG.DICTS.alpha[hash % 12]}.${CONFIG.DICTS.beta[(hash >> 4) % 12]}.${CONFIG.DICTS.gamma[(hash >> 8) % 12]}`;
-        }
-
-        function getSectorBounds(lat, lng) {
-            const latSector = Math.floor(lat / CONFIG.SECTOR_SIZE) * CONFIG.SECTOR_SIZE;
-            const lngSector = Math.floor(lng / CONFIG.SECTOR_SIZE) * CONFIG.SECTOR_SIZE;
-            return {
-                north: latSector + CONFIG.SECTOR_SIZE,
-                south: latSector,
-                east: lngSector + CONFIG.SECTOR_SIZE,
-                west: lngSector,
-                centerLat: latSector + (CONFIG.SECTOR_SIZE / 2),
-                centerLng: lngSector + (CONFIG.SECTOR_SIZE / 2)
-            };
-        }
-
-        function drawGrid() {
-            if (!state.isGridActive) return;
-            ctx.clearRect(0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio);
-            
-            const bounds = map.getBounds();
-            const startLat = Math.floor(bounds.getSouth() / CONFIG.SECTOR_SIZE) * CONFIG.SECTOR_SIZE;
-            const endLat = Math.ceil(bounds.getNorth() / CONFIG.SECTOR_SIZE) * CONFIG.SECTOR_SIZE;
-            const startLng = Math.floor(bounds.getWest() / CONFIG.SECTOR_SIZE) * CONFIG.SECTOR_SIZE;
-            const endLng = Math.ceil(bounds.getEast() / CONFIG.SECTOR_SIZE) * CONFIG.SECTOR_SIZE;
-            
-            ctx.strokeStyle = 'rgba(0, 212, 255, 0.4)';
-            ctx.lineWidth = 1.5;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = 'rgba(0, 212, 255, 0.3)';
-            
-            ctx.beginPath();
-            for (let lng = startLng; lng <= endLng; lng += CONFIG.SECTOR_SIZE) {
-                const start = map.latLngToContainerPoint([bounds.getNorth(), lng]);
-                const end = map.latLngToContainerPoint([bounds.getSouth(), lng]);
-                ctx.moveTo(start.x, start.y);
-                ctx.lineTo(end.x, end.y);
-            }
-            for (let lat = startLat; lat <= endLat; lat += CONFIG.SECTOR_SIZE) {
-                const start = map.latLngToContainerPoint([lat, bounds.getWest()]);
-                const end = map.latLngToContainerPoint([lat, bounds.getEast()]);
-                ctx.moveTo(start.x, start.y);
-                ctx.lineTo(end.x, end.y);
-            }
-            ctx.stroke();
-        }
-
-        const mapZone = document.getElementById('mapZone');
-        const holdIndicator = document.getElementById('holdIndicator');
-        const holdProgress = document.getElementById('holdProgress');
-        const tempLabel = document.getElementById('sectorLabelTemp');
-
-        mapZone.addEventListener('touchstart', startLongPress, {passive: false});
-        mapZone.addEventListener('touchmove', moveLongPress, {passive: false});
-        mapZone.addEventListener('touchend', endLongPress, {passive: false});
-        
-        // Mouse support for desktop testing
-        mapZone.addEventListener('mousedown', startLongPress);
-        mapZone.addEventListener('mousemove', moveLongPress);
-        mapZone.addEventListener('mouseup', endLongPress);
-        mapZone.addEventListener('mouseleave', endLongPress);
-
-        function startLongPress(e) {
-            if (!state.isGridActive || map.getZoom() < CONFIG.GRID_ZOOM) return;
-            
-            const touch = e.touches ? e.touches[0] : e;
-            state.touchStartPos = { x: touch.clientX, y: touch.clientY };
-            state.touchStartTime = Date.now();
-            state.isLongPress = false;
-            state.isHolding = true;
-            
-            holdIndicator.style.left = touch.clientX + 'px';
-            holdIndicator.style.top = touch.clientY + 'px';
-            holdIndicator.classList.add('active');
-            
-            holdProgress.style.transition = 'none';
-            holdProgress.style.strokeDashoffset = '126';
-            
-            setTimeout(() => {
-                holdProgress.style.transition = `stroke-dashoffset ${CONFIG.LONG_PRESS_DURATION}ms linear`;
-                holdProgress.style.strokeDashoffset = '0';
-            }, 10);
-            
-            state.longPressTimer = setTimeout(() => {
-                completeLongPress(e);
-            }, CONFIG.LONG_PRESS_DURATION);
-            
-            const latlng = map.containerPointToLatLng(L.point(touch.clientX, touch.clientY));
-            const sector = getSectorBounds(latlng.lat, latlng.lng);
-            selectSectorVisual(sector);
-        }
-
-        function moveLongPress(e) {
-            if (!state.isHolding) return;
-            const touch = e.touches ? e.touches[0] : e;
-            const dx = touch.clientX - state.touchStartPos.x;
-            const dy = touch.clientY - state.touchStartPos.y;
-            
-            if (Math.sqrt(dx * dx + dy * dy) > 20) {
-                cancelLongPress();
-                return;
-            }
-            
-            holdIndicator.style.left = touch.clientX + 'px';
-            holdIndicator.style.top = touch.clientY + 'px';
-        }
-
-        function endLongPress(e) {
-            if (!state.isHolding) return;
-            const wasLongPress = state.isLongPress;
-            cancelLongPress();
-            
-            if (!wasLongPress) {
-                state.touchCount++;
-                // Touch without long press = normal map interaction
-                if (e.target === canvas) {
-                    e.preventDefault();
-                }
+        // Haptic Feedback
+        function vibrate(pattern) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(pattern);
             }
         }
 
-        function completeLongPress(e) {
-            state.isLongPress = true;
-            state.isHolding = false;
-            
-            const touch = e.touches ? e.touches[0] : e;
-            const latlng = map.containerPointToLatLng(L.point(touch.clientX, touch.clientY));
-            const sector = getSectorBounds(latlng.lat, latlng.lng);
-            
-            showTempLabel(sector, touch.clientX, touch.clientY);
-        }
-
-        function cancelLongPress() {
-            state.isHolding = false;
-            state.isLongPress = false;
-            clearTimeout(state.longPressTimer);
-            holdIndicator.classList.remove('active');
-            holdProgress.style.transition = 'none';
-            
-            setTimeout(() => {
-                document.getElementById('sectorSelector').classList.remove('active');
-            }, 200);
-        }
-
-        function showTempLabel(sector, x, y) {
-            const words = generateWords(sector.centerLat, sector.centerLng);
-            document.getElementById('labelWordsTemp').textContent = words;
-            tempLabel.style.left = x + 'px';
-            tempLabel.style.top = y + 'px';
-            tempLabel.classList.add('visible');
-            
-            // Auto-hide after 3 seconds if not clicked
-            setTimeout(() => {
-                if (tempLabel.classList.contains('visible')) {
-                    hideTempLabel();
-                }
-            }, 3000);
-        }
-
-        function hideTempLabel() {
-            tempLabel.classList.remove('visible');
-        }
-
-        function selectSectorVisual(sector) {
-            const selector = document.getElementById('sectorSelector');
-            const nw = map.latLngToContainerPoint([sector.north, sector.west]);
-            const se = map.latLngToContainerPoint([sector.south, sector.east]);
-            
-            selector.style.left = nw.x + 'px';
-            selector.style.top = nw.y + 'px';
-            selector.style.width = (se.x - nw.x) + 'px';
-            selector.style.height = (se.y - nw.y) + 'px';
-            selector.classList.add('active');
-        }
-
-        function generateEvent(sector) {
-            const types = ['CONFLICT', 'MOVEMENT', 'SIGNAL', 'SURVEILLANCE'];
-            const type = types[Math.floor(Math.random() * types.length)];
-            const severity = Math.random() > 0.7 ? 'CRITICAL' : Math.random() > 0.4 ? 'HIGH' : 'MEDIUM';
-            const words = generateWords(sector.centerLat, sector.centerLng);
-            
-            return {
-                id: Date.now() + Math.random(),
-                sector: words,
-                lat: sector.centerLat,
-                lng: sector.centerLng,
-                type: type,
-                severity: severity,
-                source: ['SIGINT', 'HUMINT', 'OSINT', 'IMINT'][Math.floor(Math.random() * 4)],
-                time: new Date().toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'}),
-                headline: `${type} DETECTED`,
-                description: `Anomalous activity in sector ${words}. Confidence ${Math.floor(70 + Math.random() * 30)}%.`
-            };
-        }
-
-        function addIntelMarker(event) {
-            const color = event.severity === 'CRITICAL' ? '#ff0040' : 
-                         event.severity === 'HIGH' ? '#f59e0b' : '#00d4ff';
-            
-            const marker = L.circleMarker([event.lat, event.lng], {
-                radius: 8,
-                fillColor: color,
-                color: '#fff',
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.8,
-                className: 'intel-marker pulse-marker'
-            }).addTo(state.intelLayer);
-            
-            marker.bindPopup(`<div style="min-width: 220px; font-family: Inter, sans-serif;">
-                <div style="color: ${color}; font-weight: 700; font-size: 0.9rem; margin-bottom: 5px; font-family: 'JetBrains Mono', monospace;">${event.headline}</div>
-                <div style="color: var(--signal-dim); font-size: 0.75rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">${event.sector} • ${event.source} • ${event.time}</div>
-                <div style="color: #fff; font-size: 0.8rem; line-height: 1.4;">${event.description}</div>
-            </div>`);
-            
-            state.markers.push({ marker, event });
-            state.intelCount++;
-        }
-
-        function togglePanel(id) {
-            const panel = document.getElementById(id + 'Panel');
-            panel.classList.toggle('collapsed');
-        }
-
-        function startGridScan() {
-            if (map.getZoom() >= CONFIG.GRID_ZOOM) {
-                state.isGridActive = !state.isGridActive;
-                document.getElementById('gridCanvas').classList.toggle('visible');
-                document.getElementById('gridStatus').classList.toggle('active');
-                if (state.isGridActive) {
-                    drawGrid();
-                    map.on('move', drawGrid);
-                    // Generate some random intel for demo
-                    for (let i = 0; i < Math.floor(Math.random() * 3) + 3; i++) {
-                        const randomLat = CONFIG.DEFAULT_CENTER[0] + (Math.random() - 0.5) * 0.05;
-                        const randomLng = CONFIG.DEFAULT_CENTER[1] + (Math.random() - 0.5) * 0.05;
-                        const sector = getSectorBounds(randomLat, randomLng);
-                        const event = generateEvent(sector);
-                        addIntelMarker(event);
-                    }
-                    updateIntelList();
-                    showToast('Grid active: ' + state.markers.length + ' sectors scanned');
-                } else {
-                    map.off('move', drawGrid);
-                    hideTempLabel();
-                    showToast('Grid deactivated');
-                }
-            } else {
-                showToast('Zoom to level 19+ to activate grid');
-                map.flyTo(map.getCenter(), CONFIG.GRID_ZOOM, {duration: 1});
-            }
-        }
-
-        function toggleIntelLayer() {
-            state.intelVisible = !state.intelVisible;
-            if (state.intelVisible) {
-                state.markers.forEach(m => m.marker.addTo(state.intelLayer));
-                showToast('Intel layer visible');
-            } else {
-                state.intelLayer.clearLayers();
-                showToast('Intel layer hidden');
-            }
-        }
-
-        function clearIntel() {
-            state.intelLayer.clearLayers();
-            state.markers = [];
-            state.intelCount = 0;
-            updateIntelList();
-            showToast('Intel cleared');
-        }
-
-        function resetView() {
-            map.flyTo(CONFIG.DEFAULT_CENTER, CONFIG.DEFAULT_ZOOM, {duration: 1.5});
-            state.isGridActive = false;
-            document.getElementById('gridCanvas').classList.remove('visible');
-            document.getElementById('gridStatus').classList.remove('active');
-            hideTempLabel();
-        }
-
-        function toggleConnections() {
-            state.showConnections = !state.showConnections;
-            showToast(state.showConnections ? 'Links Visible' : 'Links Hidden');
-            // Implementation for drawing lines between markers would go here
-        }
-
-        function exportIntel() {
-            const data = state.markers.map(m => ({
-                ...m.event,
-                coordinates: [m.event.lat, m.event.lng]
-            }));
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `specter_intel_${new Date().toISOString().slice(0,10)}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-            showToast('Intel exported');
-        }
-
+        // Toast statt Status Text
         function showToast(msg) {
-            const toast = document.getElementById('toast');
+            const toast = document.getElementById('statusToast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
-        map.on('zoom', () => {
-            document.getElementById('zoomLevel').textContent = map.getZoom().toFixed(0);
-            if (state.isGridActive && map.getZoom() < CONFIG.GRID_ZOOM - 2) {
-                state.isGridActive = false;
-                document.getElementById('gridCanvas').classList.remove('visible');
-                document.getElementById('gridStatus').classList.remove('active');
-                showToast('Grid auto-deactivated (zoom level)');
+        function initGame() {
+            createDeck();
+            shuffleDeck();
+            dealCards();
+            updateUI();
+            showToast('Spiel gestartet! Ziehe eine Karte.');
+        }
+
+        function createDeck() {
+            deck = [];
+            for (let d = 0; d < 2; d++) {
+                for (let suit of SUITS) {
+                    for (let value of VALUES) {
+                        deck.push({
+                            id: `${d}-${suit}-${value}`,
+                            value, suit,
+                            isJoker: false,
+                            color: (suit === '♥' || suit === '♦') ? 'red' : 'black'
+                        });
+                    }
+                }
             }
-        });
+            for (let i = 0; i < 4; i++) {
+                deck.push({id: `joker-${i}`, value: 'JOKER', suit: '🃏', isJoker: true, color: 'joker'});
+            }
+        }
 
-        // Prevent map click when clicking on label
-        tempLabel.addEventListener('touchstart', (e) => {
-            e.stopPropagation();
-            hideTempLabel();
+        function shuffleDeck() {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        function dealCards() {
+            hand = [];
+            sets = {'3-1':[], '3-2':[], '4-1':[], '4-2':[]};
+            discardPile = [];
+            
+            for (let i = 0; i < 14; i++) hand.push(deck.pop());
+            if (deck.length > 0) discardPile.push(deck.pop());
+            
+            lastAction = null;
+        }
+
+        function drawCard() {
+            if (deck.length === 0) {
+                if (discardPile.length > 1) {
+                    const top = discardPile.pop();
+                    deck = discardPile;
+                    discardPile = [top];
+                    shuffleDeck();
+                    showToast('Stapel neu gemischt!');
+                } else {
+                    showToast('Keine Karten mehr!');
+                    return;
+                }
+            }
+            
+            const card = deck.pop();
+            hand.push(card);
+            lastAction = {type: 'draw', card};
+            vibrate(50);
+            updateUI();
+            showToast('Karte gezogen');
+        }
+
+        function drawFromDiscard() {
+            if (discardPile.length === 0) return;
+            const card = discardPile.pop();
+            hand.push(card);
+            lastAction = {type: 'drawDiscard', card};
+            vibrate(50);
+            updateUI();
+            showToast('Vom Ablagestapel');
+        }
+
+        // Touch Drag & Drop Implementation
+        function setupDragHandlers(element, card, index) {
+            // Touch Events
+            element.addEventListener('touchstart', (e) => handleTouchStart(e, card, index), {passive: false});
+            element.addEventListener('touchmove', (e) => handleTouchMove(e), {passive: false});
+            element.addEventListener('touchend', (e) => handleTouchEnd(e));
+            
+            // Mouse Events (für Desktop Kompatibilität)
+            element.addEventListener('mousedown', (e) => handleMouseDown(e, card, index));
+        }
+
+        function handleTouchStart(e, card, index) {
+            e.preventDefault();
             const touch = e.touches[0];
-            const latlng = map.containerPointToLatLng(L.point(touch.clientX, touch.clientY));
-            const sector = getSectorBounds(latlng.lat, latlng.lng);
-            const event = generateEvent(sector);
-            addIntelMarker(event);
-            updateIntelList();
-            showToast('Intel captured: ' + event.sector);
-        }, {passive: false});
-        
-        tempLabel.addEventListener('mousedown', (e) => {
-            e.stopPropagation();
-            hideTempLabel();
-            const rect = tempLabel.getBoundingClientRect();
-            const latlng = map.containerPointToLatLng(L.point(rect.left + rect.width/2, rect.top + rect.height/2 + 50));
-            const sector = getSectorBounds(latlng.lat, latlng.lng);
-            const event = generateEvent(sector);
-            addIntelMarker(event);
-            updateIntelList();
-            showToast('Intel captured: ' + event.sector);
-        });
+            startDrag(touch.clientX, touch.clientY, card, index, e.target);
+        }
 
-        function updateIntelList() {
-            const intelList = document.getElementById('intelList');
-            if (state.markers.length === 0) {
-                intelList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--signal-dim); font-size: 0.8rem;"><i class="fas fa-satellite" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.3;"></i><p>No active intelligence.<br>Scan sectors to populate.</p></div>';
+        function handleMouseDown(e, card, index) {
+            e.preventDefault();
+            startDrag(e.clientX, e.clientY, card, index, e.target);
+            
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        }
+
+        function startDrag(x, y, card, index, element) {
+            draggedCard = card;
+            draggedIndex = index;
+            
+            // Clone für Dragging erstellen
+            dragElement = element.cloneNode(true);
+            dragElement.classList.add('dragging');
+            dragElement.style.width = element.offsetWidth + 'px';
+            dragElement.style.height = element.offsetHeight + 'px';
+            
+            const rect = element.getBoundingClientRect();
+            touchOffset.x = x - rect.left;
+            touchOffset.y = y - rect.top;
+            
+            dragElement.style.left = (x - touchOffset.x) + 'px';
+            dragElement.style.top = (y - touchOffset.y) + 'px';
+            
+            document.body.appendChild(dragElement);
+            element.style.opacity = '0.3';
+            
+            vibrate(30);
+            
+            // Highlight mögliche Drop-Zonen
+            highlightDropZones(true);
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            moveDrag(touch.clientX, touch.clientY);
+        }
+
+        function handleMouseMove(e) {
+            e.preventDefault();
+            moveDrag(e.clientX, e.clientY);
+        }
+
+        function moveDrag(x, y) {
+            if (!dragElement) return;
+            dragElement.style.left = (x - touchOffset.x) + 'px';
+            dragElement.style.top = (y - touchOffset.y) + 'px';
+            
+            // Highlight Drop-Zone unter dem Finger
+            checkDropZone(x, y);
+        }
+
+        function handleTouchEnd(e) {
+            const touch = e.changedTouches[0];
+            endDrag(touch.clientX, touch.clientY);
+        }
+
+        function handleMouseUp(e) {
+            endDrag(e.clientX, e.clientY);
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        }
+
+        function checkDropZone(x, y) {
+            // Entferne alte Highlights
+            document.querySelectorAll('.set-slot').forEach(slot => slot.classList.remove('active-drop'));
+            
+            const element = document.elementFromPoint(x, y);
+            if (!element) return;
+            
+            const slot = element.closest('.set-slot');
+            if (slot && canDropInSet(slot.dataset.set)) {
+                slot.classList.add('active-drop');
+            }
+        }
+
+        function canDropInSet(setKey) {
+            const max = parseInt(document.getElementById(`set${setKey}`).dataset.max);
+            return sets[setKey].length < max;
+        }
+
+        function endDrag(x, y) {
+            if (!dragElement) return;
+            
+            const element = document.elementFromPoint(x, y);
+            const slot = element ? element.closest('.set-slot') : null;
+            
+            if (slot && canDropInSet(slot.dataset.set)) {
+                // Erfolgreicher Drop
+                addToSet(slot.dataset.set, draggedIndex);
+                vibrate([50, 30, 50]);
+            } else {
+                // Zurück zur Hand
+                showToast('Hier kann nicht abgelegt werden');
+                vibrate(100);
+            }
+            
+            // Cleanup
+            dragElement.remove();
+            dragElement = null;
+            draggedCard = null;
+            draggedIndex = null;
+            
+            document.querySelectorAll('.set-slot').forEach(slot => {
+                slot.classList.remove('active-drop');
+            });
+            
+            updateUI();
+        }
+
+        function highlightDropZones(active) {
+            document.querySelectorAll('.set-slot').forEach(slot => {
+                if (active && canDropInSet(slot.dataset.set)) {
+                    slot.style.borderColor = 'rgba(212, 175, 55, 0.6)';
+                } else {
+                    slot.style.borderColor = '';
+                }
+            });
+        }
+
+        function addToSet(setKey, handIndex) {
+            const card = hand[handIndex];
+            sets[setKey].push(card);
+            hand.splice(handIndex, 1);
+            lastAction = {type: 'addToSet', card, set: setKey, handIndex};
+            
+            validateSet(setKey);
+            updateUI();
+            
+            const max = parseInt(document.getElementById(`set${setKey}`).dataset.max);
+            if (sets[setKey].length === max) {
+                if (validateSet(setKey)) {
+                    showToast('✓ Gültiges Set!');
+                } else {
+                    showToast('✗ Ungültige Kombination');
+                    vibrate([100, 50, 100]);
+                }
+            }
+        }
+
+        function validateSet(setKey) {
+            const cards = sets[setKey];
+            const slot = document.getElementById(`set${setKey}`);
+            
+            if (cards.length === 0) {
+                slot.classList.remove('valid', 'invalid');
+                return false;
+            }
+            
+            const isValid = checkSetValidity(cards);
+            
+            slot.classList.remove('valid', 'invalid');
+            if (isValid) slot.classList.add('valid');
+            else if (cards.length === parseInt(slot.dataset.max)) slot.classList.add('invalid');
+            
+            return isValid;
+        }
+
+        function checkSetValidity(cards) {
+            if (cards.length < 3) return false;
+            
+            const jokers = cards.filter(c => c.isJoker);
+            const real = cards.filter(c => !c.isJoker);
+            
+            if (real.length === 0) return false; // Mindestens eine echte Karte
+            
+            // Gruppe?
+            if (real.every(c => c.value === real[0].value)) {
+                const suits = new Set(real.map(c => c.suit));
+                if (suits.size === real.length) return true; // Verschiedene Farben
+            }
+            
+            // Run?
+            if (real.every(c => c.suit === real[0].suit)) {
+                const sorted = [...real].sort((a,b) => VALUE_ORDER[a.value] - VALUE_ORDER[b.value]);
+                let gaps = 0;
+                for (let i = 1; i < sorted.length; i++) {
+                    gaps += VALUE_ORDER[sorted[i].value] - VALUE_ORDER[sorted[i-1].value] - 1;
+                }
+                if (jokers.length >= gaps) return true;
+            }
+            
+            return false;
+        }
+
+        function undoLast() {
+            if (!lastAction) {
+                showToast('Nichts zum Rückgängig machen');
                 return;
             }
-            let html = `<div style="padding: 8px 12px; color: var(--matrix-green); font-size: 0.7rem; border-bottom: 1px solid var(--border); margin-bottom: 6px;">INTEL COUNT: ${state.intelCount}</div>`;
-            state.markers.slice(-8).reverse().forEach(m => {
-                const color = m.event.severity === 'CRITICAL' ? '#ff0040' : m.event.severity === 'HIGH' ? '#f59e0b' : '#00d4ff';
-                html += `<div class="intel-item" onclick="map.flyTo([${m.event.lat}, ${m.event.lng}], 18); togglePanel('intel')">
-                    <div class="intel-headline" style="color: ${color};">● ${m.event.type}</div>
-                    <div class="intel-meta">
-                        <span>${m.event.sector}</span>
-                        <span>${m.event.severity}</span>
-                    </div>
-                </div>`;
-            });
-            intelList.innerHTML = html;
+            
+            if (lastAction.type === 'addToSet') {
+                const card = sets[lastAction.set].pop();
+                hand.splice(lastAction.handIndex, 0, card);
+                validateSet(lastAction.set);
+            } else if (lastAction.type === 'draw') {
+                hand.pop();
+                deck.push(lastAction.card);
+            } else if (lastAction.type === 'drawDiscard') {
+                hand.pop();
+                discardPile.push(lastAction.card);
+            }
+            
+            lastAction = null;
+            updateUI();
+            showToast('Rückgängig gemacht');
+            vibrate(40);
         }
 
-        // Initialize
-        console.log('%cSPECTER INTELLIGENCE GRID ACTIVE', 'color:#00ff41;font-family:JetBrains Mono;font-size:12px;font-weight:bold;');
-        console.log('%cGitHub Deployment Ready', 'color:#00d4ff;font-family:JetBrains Mono;font-size:10px;');
+        function checkWin() {
+            const allFull = Object.keys(sets).every(key => {
+                const max = parseInt(document.getElementById(`set${key}`).dataset.max);
+                return sets[key].length === max && validateSet(key);
+            });
+            
+            const totalCards = Object.values(sets).reduce((a,b) => a+b.length, 0);
+            
+            if (allFull && totalCards === 14) {
+                document.getElementById('winOverlay').classList.add('show');
+                document.getElementById('winModal').classList.add('show');
+                vibrate([100, 50, 100, 50, 200]);
+            } else {
+                showToast('Noch nicht alle Sets vollständig!');
+                vibrate([150, 50, 150]);
+                
+                // Ungültige Sets markieren
+                Object.keys(sets).forEach(key => validateSet(key));
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('winOverlay').classList.remove('show');
+            document.getElementById('winModal').classList.remove('show');
+            document.getElementById('rulesModal').classList.remove('show');
+            document.getElementById('modalOverlay').classList.remove('show');
+            
+            initGame();
+        }
+
+        function updateUI() {
+            // Hand
+            const handContainer = document.getElementById('handCards');
+            handContainer.innerHTML = '';
+            
+            hand.forEach((card, idx) => {
+                const el = createCardElement(card);
+                setupDragHandlers(el, card, idx);
+                handContainer.appendChild(el);
+            });
+            
+            // Sets
+            Object.keys(sets).forEach(key => {
+                const container = document.getElementById(`content${key}`);
+                container.innerHTML = '';
+                sets[key].forEach(card => {
+                    container.appendChild(createCardElement(card, true));
+                });
+                validateSet(key);
+            });
+            
+            // Zähler
+            document.getElementById('drawCount').textContent = deck.length;
+            document.getElementById('discardCount').textContent = discardPile.length;
+            document.getElementById('handCount').textContent = hand.length;
+            
+            // Ablagestapel anzeigen
+            const discardEl = document.getElementById('discardPile');
+            if (discardPile.length > 0) {
+                const top = discardPile[discardPile.length-1];
+                discardEl.innerHTML = renderCardFace(top) + `<div class="card-count">${discardPile.length}</div>`;
+                discardEl.classList.add('active');
+            } else {
+                discardEl.innerHTML = '<div class="card-back" style="background:transparent;border:2px dashed #555;color:#555">Leer</div><div class="card-count">0</div>';
+                discardEl.classList.remove('active');
+            }
+            
+            // Draw Button State
+            document.getElementById('drawPile').classList.toggle('disabled', deck.length === 0 && discardPile.length <= 1);
+        }
+
+        function createCardElement(card, small = false) {
+            const div = document.createElement('div');
+            div.className = `card ${card.color} ${small ? 'in-set' : ''}`;
+            
+            if (card.isJoker) {
+                div.innerHTML = `
+                    <div class="card-corner top-left">★</div>
+                    <div class="card-value">J</div>
+                    <div class="card-suit">★</div>
+                    <div class="card-corner bottom-right">★</div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div class="card-corner top-left">${card.value}</div>
+                    <div class="card-value">${card.value}</div>
+                    <div class="card-suit">${card.suit}</div>
+                    <div class="card-corner bottom-right">${card.value}</div>
+                `;
+            }
+            
+            return div;
+        }
+
+        function renderCardFace(card) {
+            if (card.isJoker) {
+                return `<div style="width:100%;height:100%;background:linear-gradient(135deg,#f39c12,#e74c3c);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;">★</div>`;
+            }
+            const color = (card.suit === '♥' || card.suit === '♦') ? '#e74c3c' : '#2c3e50';
+            return `<div style="width:100%;height:100%;background:white;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:${color};font-weight:bold;"><div style="font-size:1.2rem">${card.value}</div><div style="font-size:1.5rem">${card.suit}</div></div>`;
+        }
+
+        // UI Helpers
+        function showRules() {
+            document.getElementById('modalOverlay').classList.add('show');
+            document.getElementById('rulesModal').classList.add('show');
+        }
+
+        function closeRules() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            document.getElementById('rulesModal').classList.remove('show');
+        }
+
+        // Init
+        window.onload = initGame;
+        
+        // Prevent Zoom auf Mobile
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        
+        // Double-tap Zoom prevention
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
